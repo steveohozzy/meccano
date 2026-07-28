@@ -31,10 +31,12 @@ export default function PanelBannerSection({ blok }) {
       {...storyblokEditable(blok)}
       className="relative overflow-hidden border-b border-line bg-background"
     >
-      <div
-        className="pointer-events-none absolute inset-0 bg-grid opacity-60"
-        aria-hidden
-      />
+      {blok.ShowGrid && (
+        <div
+          className="pointer-events-none absolute inset-0 bg-grid opacity-60"
+          aria-hidden
+        />
+      )}
 
       <div className="relative mx-auto grid max-w-[1400px] grid-cols-1 lg:grid-cols-2">
 

@@ -30,25 +30,51 @@ export default function CollectionPreview({ blok }) {
         ">
           <div>
 
-            <span className="
-              font-mono
-              text-[10px]
-              uppercase
-              tracking-[0.2em]
-              text-red-500
-            ">
-              {blok.Eyebrow || "/ 01 — The Collection"}
-            </span>
+            <div>
 
-            <h2 className="
-              mt-3
-              text-4xl
-              font-bold
-              tracking-tight
-              sm:text-5xl
-            ">
-              {blok.Title || "Sets worth displaying"}
-            </h2>
+              <span className="
+                font-mono
+                text-[10px]
+                uppercase
+                tracking-[0.2em]
+                text-red-500
+              ">
+                {blok.Eyebrow || "/ 01 — The Collection"}
+              </span>
+
+              {blok.Logo?.filename && (
+                <Image
+                  src={blok.Logo.filename}
+                  alt={blok.Logo.alt || "Collection logo"}
+                  width={280}
+                  height={90}
+                  className="mt-5 h-12 w-auto object-contain object-left md:h-14"
+                />
+              )}
+
+              {blok.Title && (
+                <div className="
+                  mt-5
+                  text-4xl
+                  font-bold
+                  tracking-tight
+                  sm:text-5xl
+                ">
+                  {blok.Title}
+                </div>
+              )}
+
+              {blok.Intro && (
+                <p className="
+                  mt-4
+                  max-w-xl
+                  text-muted-foreground
+                ">
+                  {blok.Intro}
+                </p>
+              )}
+
+            </div>
 
             {blok.Intro && (
               <p className="

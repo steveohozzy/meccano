@@ -16,6 +16,7 @@ import HtmlBlock from "@/components/HTMLBlock";
 import CollectionPreview from "@/components/CollectionPreview";
 import PanelBannerSection from "@/components/PanelBannerSection";
 import ImageTextBanner from "@/components/ImageTextBanner";
+import BrandCollectionSection from "@/components/BrandCollectionSection";
 
 import { apiPlugin, storyblokInit } from "@storyblok/react/rsc";
 
@@ -54,6 +55,7 @@ export const getStoryblokApi = storyblokInit({
     CollectionPreview: CollectionPreview,
     PanelBannerSection: PanelBannerSection,
     ImageTextBanner: ImageTextBanner,
+    BrandCollectionSection: BrandCollectionSection,
   },
 
   apiOptions: {

@@ -30,8 +30,14 @@ export default function ImageTextBanner({ blok }) {
   return (
     <section
       {...storyblokEditable(blok)}
-      className="border-b border-line"
+      className="relative overflow-hidden border-b border-line bg-background"
     >
+      {blok.ShowGrid && (
+        <div
+          className="pointer-events-none absolute inset-0 bg-grid opacity-60"
+          aria-hidden
+        />
+      )}
       <div
         className={`mx-auto grid max-w-[1400px] grid-cols-1 lg:grid-cols-2 ${
           reverse ? "lg:[&>*:first-child]:order-2" : ""
