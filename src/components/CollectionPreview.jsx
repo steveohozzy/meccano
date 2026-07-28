@@ -32,14 +32,8 @@ export default function CollectionPreview({ blok }) {
 
             <div>
 
-              <span className="
-                font-mono
-                text-[10px]
-                uppercase
-                tracking-[0.2em]
-                text-red-500
-              ">
-                {blok.Eyebrow || "/ 01 — The Collection"}
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-red-500 inline-flex items-center gap-2">
+                <Bolt className="h-4 w-4" /><span>{blok.eyebrow}</span><Bolt className="h-4 w-4" />
               </span>
 
               {blok.Logo?.filename && (

@@ -48,8 +48,8 @@ export default function ImageTextBanner({ blok }) {
         <div className="flex flex-col justify-center px-4 py-14 md:px-8 lg:py-24">
 
           {blok.Eyebrow && (
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-red-500">
-              {blok.Eyebrow}
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-red-500 inline-flex items-center gap-2">
+              <Bolt className="h-4 w-4" /><span>{blok.Eyebrow}</span><Bolt className="h-4 w-4" />
             </span>
           )}
 

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { storyblokEditable } from "@storyblok/react";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Bolt } from "lucide-react";
 
 export default function Blog({ blok }) {
 
@@ -38,14 +38,9 @@ export default function Blog({ blok }) {
 
             <div className="max-w-xl">
 
-              <span className="
-                font-mono
-                text-[10px]
-                uppercase
-                tracking-[0.2em]
-                text-red-500
-              ">
-                {blok.Tagline || "/ 05 — Workshop Journal"}
+
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-red-500 inline-flex items-center gap-2">
+                <Bolt className="h-4 w-4" /><span>{blok.Tagline}</span><Bolt className="h-4 w-4" />
               </span>
 
 

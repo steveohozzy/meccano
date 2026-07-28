@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { storyblokEditable } from "@storyblok/react/rsc";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, Bolt } from "lucide-react";
 
 export default function Newsletter({ blok }) {
   const [email, setEmail] = useState("");
@@ -54,8 +54,8 @@ export default function Newsletter({ blok }) {
             {/* Left */}
             <div>
 
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-red-500">
-                {blok?.Eyebrow || "/ The Bench Note"}
+              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-red-500 inline-flex items-center gap-2">
+                <Bolt className="h-4 w-4" /><span>{blok.Eyebrow}</span><Bolt className="h-4 w-4" />
               </span>
 
               <div className="mt-3 max-w-md text-balance text-4xl font-bold tracking-tight sm:text-5xl">
