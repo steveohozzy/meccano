@@ -3,7 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 import { storyblokEditable } from "@storyblok/react/rsc";
+import { resolveLink } from "@/lib/storyblok";
 
 export default function Header({ blok, menuItems = [] }) {
   const [open, setOpen] = useState(false);
@@ -12,114 +14,357 @@ export default function Header({ blok, menuItems = [] }) {
     <>
       <header
         {...storyblokEditable(blok)}
-        className="sticky top-0 z-50 border-b border-white/10 bg-green-800/80 backdrop-blur-xl"
+        className="
+          sticky
+          top-0
+          z-50
+          border-b
+          border-white/10
+          bg-background/80
+          backdrop-blur-xl
+        "
       >
-        <div className="mx-auto max-w-7xl px-4">
+        <div className="mx-auto max-w-[1400px] px-4 md:px-8">
           <div className="flex h-20 items-center justify-between">
-            <Link href="/">
-              <div className="relative flex h-11">
-                <Image
-                  src="https://www.elc.co.uk/medias/site-logo.svg?context=bWFzdGVyfGltYWdlc3wzNDcwN3xpbWFnZS9zdmcreG1sfGFXMWhaMlZ6TDJnNFppOW9ZV0l2T1RFNE56WTNNVGsyTlRjeU5pNXpkbWN8MDMyOGQ4OTBmM2VlYzg2Yzc1Nzc4YzQyNTAxNmI1OWUyNGY3YzE1OTQzZjkxYTFlYjA3NGQ0ZmJiZDM2MjcyZQ"
-                  alt="ELC"
-                  width={400}
-                  height={200}
-                />
-              </div>
+
+            {/* Logo */}
+            <Link
+              href="/"
+              className="relative h-12 w-40"
+            >
+              <Image
+  src={
+    blok?.Logo?.filename ||
+    "/images/meccano-logo.png"
+  }
+  alt={
+    blok?.LogoAlt ||
+    "Meccano"
+  }
+  fill
+  className="
+    object-contain
+    object-left
+  "
+/>
             </Link>
 
+
+            {/* Menu */}
             <button
               onClick={() => setOpen(!open)}
-              aria-label="Toggle Menu"
-              className="relative flex h-12 w-12 items-center justify-center cursor-pointer"
+              aria-label="Toggle menu"
+              className="
+                flex
+                h-12
+                w-12
+                items-center
+                justify-center
+                rounded-md
+                border
+                border-white/10
+                bg-surface
+                transition
+                hover:border-red-500/50
+                cursor-pointer
+              "
             >
               <div className="relative h-6 w-6">
-                <span className={`absolute left-0 top-1 h-0.5 w-6 bg-white transition-all duration-300 ${open ? "translate-y-2 rotate-45" : ""}`} />
-                <span className={`absolute left-0 top-3 h-0.5 w-6 bg-white transition-all duration-300 ${open ? "opacity-0" : ""}`} />
-                <span className={`absolute left-0 top-5 h-0.5 w-6 bg-white transition-all duration-300 ${open ? "-translate-y-2 -rotate-45" : ""}`} />
+
+                <span
+                  className={`
+                    absolute
+                    left-0
+                    top-1
+                    h-0.5
+                    w-6
+                    bg-red-500
+                    transition-all
+                    duration-300
+                    ${open ? "translate-y-2 rotate-45" : ""}
+                  `}
+                />
+
+                <span
+                  className={`
+                    absolute
+                    left-0
+                    top-3
+                    h-0.5
+                    w-6
+                    bg-red-500
+                    transition-all
+                    duration-300
+                    ${open ? "opacity-0" : ""}
+                  `}
+                />
+
+                <span
+                  className={`
+                    absolute
+                    left-0
+                    top-5
+                    h-0.5
+                    w-6
+                    bg-red-500
+                    transition-all
+                    duration-300
+                    ${open ? "-translate-y-2 -rotate-45" : ""}
+                  `}
+                />
+
               </div>
             </button>
+
           </div>
         </div>
       </header>
 
+
+
       {/* Overlay */}
+
       <div
         onClick={() => setOpen(false)}
-        className={`fixed inset-0 z-50 bg-black/50 backdrop-blur-md transition-opacity duration-300 ${
-          open ? "opacity-100" : "pointer-events-none opacity-0"
-        }`}
+        className={`
+          fixed
+          inset-0
+          z-50
+          bg-black/60
+          backdrop-blur-md
+          transition-opacity
+          duration-300
+          ${
+            open
+              ? "opacity-100"
+              : "pointer-events-none opacity-0"
+          }
+        `}
       />
 
+
+
       {/* Drawer */}
+
       <aside
-        className={`fixed right-0 top-0 z-[60] flex h-screen w-full max-w-[420px] flex-col overflow-hidden bg-gradient-to-b from-green-800 via-green-700 to-emerald-900 shadow-[0_0_60px_rgba(0,0,0,0.4)] transition-transform duration-500 ease-out ${
-          open ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`
+          fixed
+          right-0
+          top-0
+          z-[60]
+          flex
+          h-screen
+          w-full
+          max-w-[420px]
+          flex-col
+          overflow-hidden
+          bg-gradient-to-b
+          from-red-950
+          via-background
+          to-background
+          shadow-[0_0_80px_rgba(220,38,38,.25)]
+          transition-transform
+          duration-500
+          ease-out
+          ${
+            open
+              ? "translate-x-0"
+              : "translate-x-full"
+          }
+        `}
       >
-        <div className="relative z-10 flex items-center justify-between px-8 py-8">
+
+        <div className="
+          flex
+          items-center
+          justify-between
+          px-8
+          py-8
+        ">
+
           <div>
-            <p className="mb-2 text-xs uppercase tracking-[0.35em] text-white/60">
+
+            <p className="
+              font-mono
+              text-[10px]
+              uppercase
+              tracking-[0.3em]
+              text-red-400
+            ">
               Explore
             </p>
-            <h2 className="font-fraunces text-3xl text-white">ELC</h2>
+
+            <h2 className="
+              mt-2
+              text-3xl
+              font-bold
+            ">
+              Meccano
+            </h2>
+
           </div>
+
 
           <button
             onClick={() => setOpen(false)}
-            className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-2xl text-white hover:bg-white/20 cursor-pointer"
+            className="
+              flex
+              h-10
+              w-10
+              items-center
+              justify-center
+              rounded-md
+              border
+              border-white/10
+              bg-white/5
+              text-xl
+              hover:border-red-500/50
+              cursor-pointer
+            "
           >
             ×
           </button>
+
         </div>
 
+
+
         {/* Navigation */}
-        <nav className="relative z-10 flex flex-1 flex-col px-6 py-4">
+
+        <nav className="
+          flex-1
+          px-6
+          py-4
+        ">
 
           {menuItems.map((item, index) => (
+
             <Link
               key={item.id || item.slug}
               href={`/${item.slug}`}
               onClick={() => setOpen(false)}
-               className={`group flex items-center justify-between rounded-2xl px-5 py-4 text-xl font-medium text-white transition-all duration-300 hover:translate-x-2 hover:bg-white/10 ${
-                  open
-                    ? "translate-x-0 opacity-100"
-                    : "translate-x-8 opacity-0"
-                }`}
-                style={{ transitionDelay: `${index * 70}ms` }}
+              className="
+                group
+                flex
+                items-center
+                justify-between
+                border-b
+                border-white/10
+                px-4
+                py-5
+                font-mono
+                text-sm
+                uppercase
+                tracking-[0.15em]
+                transition-all
+                hover:text-red-400
+              "
             >
-              <span>{item.name}</span>
-              <span
+
+              <span>
+                {item.name}
+              </span>
+
+
+              <ArrowUpRight
                 className="
+                  h-4
+                  w-4
                   opacity-40
                   transition-all
-                  duration-300
-                  group-hover:translate-x-2
+                  group-hover:translate-x-1
+                  group-hover:-translate-y-1
                   group-hover:opacity-100
                 "
-              >
-                →
-              </span>
+              />
+
             </Link>
+
           ))}
+
         </nav>
 
-        <div className="relative z-10 p-6">
-          <div className="rounded-3xl bg-yellow-400 p-6 text-green-900 shadow-xl">
-            <h3 className="mb-2 text-xl font-bold">Ready to Play?</h3>
 
-            <p className="mb-4 text-sm leading-relaxed">
-              Discover activities, adventures and ideas for little explorers.
+
+        {/* CTA */}
+
+        <div className="p-6">
+
+          <div
+            className="
+              rounded-xl
+              border
+              border-red-500/30
+              bg-red-500/10
+              p-6
+              backdrop-blur
+            "
+          >
+
+            <p
+              className="
+                font-mono
+                text-[10px]
+                uppercase
+                tracking-[0.2em]
+                text-red-400
+              "
+            >
+              {blok?.CtaPanelEyebrow || "Build Journal"}
             </p>
 
+
+            <div className="
+              mt-3
+              text-xl
+              font-bold
+            ">
+              {blok?.CtaPanelHeading || "Engineering starts here"}
+            </div>
+
+
+            <p className="
+              mt-3
+              text-sm
+              text-muted-foreground
+            ">
+              {blok?.CtaPanelText || "Discover models, builds and mechanical stories."}
+            </p>
+
+
             <Link
-              href="/blog"
+              href={resolveLink(blok?.CtaLink) || "/blog"}
               onClick={() => setOpen(false)}
-              className="inline-flex items-center gap-2 rounded-full bg-green-900 px-5 py-3 text-sm font-semibold text-white hover:scale-105"
+              className="
+                mt-5
+                inline-flex
+                items-center
+                gap-2
+                rounded-md
+                bg-red-600
+                px-5
+                py-3
+                font-mono
+                text-xs
+                uppercase
+                tracking-[0.15em]
+                text-white
+                transition
+                hover:bg-red-500
+              "
             >
-              Start Exploring →
+              {blok?.CtaText || "Build Journal"}
+
+              <ArrowUpRight className="h-4 w-4" />
+
             </Link>
+
+
           </div>
+
         </div>
+
+
       </aside>
     </>
   );

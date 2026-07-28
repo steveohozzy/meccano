@@ -13,6 +13,9 @@ import RichText from "@/components/RichText";
 import Grid from "@/components/Grid";
 import Column from "@/components/Column";
 import HtmlBlock from "@/components/HTMLBlock";
+import CollectionPreview from "@/components/CollectionPreview";
+import PanelBannerSection from "@/components/PanelBannerSection";
+import ImageTextBanner from "@/components/ImageTextBanner";
 
 import { apiPlugin, storyblokInit } from "@storyblok/react/rsc";
 
@@ -48,6 +51,9 @@ export const getStoryblokApi = storyblokInit({
     blogPost: BlogPost,
     brandsHub: BrandsHub,
     brandSection: BrandSection,
+    CollectionPreview: CollectionPreview,
+    PanelBannerSection: PanelBannerSection,
+    ImageTextBanner: ImageTextBanner,
   },
 
   apiOptions: {

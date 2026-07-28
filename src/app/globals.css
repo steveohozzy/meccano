@@ -1,55 +1,249 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme inline {
-  --font-heading: var(--font-nunito), Georgia, serif;
-  --font-sans: var(--font-geist-sans), 'Geist Fallback';
-  --font-serif: var(--font-nunito), Georgia, serif;
-  --font-mono: var(--font-geist-mono), 'Geist Mono Fallback';
-  --color-chart-4: var(--chart-4);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --color-foreground: var(--foreground);
+  --font-sans: var(--font-space-grotesk), 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), 'JetBrains Mono', ui-monospace, monospace;
+
   --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-electric: var(--electric);
+  --color-electric-foreground: var(--electric-foreground);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-chrome: var(--chrome);
+  --color-line: var(--line);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.75rem;
 }
 
 :root {
-  --background: oklch(0.97 0.014 85);
-  --foreground: oklch(0.23 0.03 50);
-  --card: oklch(0.99 0.008 85);
-  --card-foreground: oklch(0.23 0.03 50);
-  --popover: oklch(0.99 0.008 85);
-  --popover-foreground: oklch(0.23 0.03 50);
-  --primary: oklch(32.187% 0.10266 140.731);
-  --primary-foreground: oklch(0.98 0.01 85);
-  --secondary: oklch(0.7 0.12 235);
-  --secondary-foreground: oklch(0.2 0.03 50);
-  --muted: oklch(0.93 0.018 85);
-  --muted-foreground: oklch(0.5 0.03 60);
-  --accent: oklch(0.86 0.16 90);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.88 0.02 80);
-  --input: oklch(0.88 0.02 80);
-  --chart-4: oklch(0.65 0.15 150);
+  color-scheme: dark;
+
+  /* Deep navy-black base */
+  --background: oklch(0.15 0.028 255);
+  --foreground: oklch(0.97 0.008 240);
+
+  /* Glossy raised surfaces */
+  --surface: oklch(0.2 0.032 255);
+  --surface-2: oklch(0.25 0.036 255);
+
+  /* Electric blue accent */
+  --electric: oklch(0.72 0.15 232);
+  --electric-foreground: oklch(0.15 0.028 255);
+
+  /* Meccano red (sharp brand accent) */
+  --brand: oklch(0.58 0.22 27);
+  --brand-foreground: oklch(0.98 0.01 240);
+
+  /* Chrome / silver */
+  --chrome: oklch(0.82 0.012 240);
+
+  --line: oklch(0.98 0.01 240 / 0.1);
+  --muted-foreground: oklch(80.613% 0.0084 254.058);
+}
+
+@layer base {
+  * {
+    border-color: var(--line);
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background-color: var(--electric);
+    color: var(--electric-foreground);
+  }
+}
+
+/* Faint technical grid */
+@utility bg-grid {
+  background-image: linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* Electric radial glow backdrop */
+@utility glow-blue {
+  background-image: radial-gradient(
+    60% 60% at 50% 45%,
+    oklch(0.72 0.15 232 / 0.28) 0%,
+    oklch(0.72 0.15 232 / 0.08) 40%,
+    transparent 72%
+  );
+}
+
+/* Glossy card sheen */
+@utility card-gloss {
+  background-image: linear-gradient(
+    160deg,
+    oklch(0.98 0.01 240 / 0.08) 0%,
+    oklch(0.98 0.01 240 / 0.02) 22%,
+    transparent 50%
+  );
+}
+
+/* Red text/ring glow */
+@utility ring-glow {
+  box-shadow:
+    0 0 0 1px oklch(0.58 0.22 27 / 0.45),
+    0 8px 40px -8px oklch(0.58 0.22 27 / 0.5);
 }
 
 @keyframes marquee {
   from {
-    transform: translate3d(0, 0, 0);
+    transform: translateX(0);
   }
   to {
-    transform: translate3d(-50%, 0, 0);
+    transform: translateX(-50%);
   }
+}
+
+.animate-marquee {
+  animation: marquee 32s linear infinite;
+}
+
+.hero-spotlight{
+    position:absolute;
+    width:320px;
+    height:320px;
+    border-radius:50%;
+    pointer-events:none;
+    filter:blur(80px);
+
+    background:radial-gradient(
+        circle,
+        rgba(70,180,255,.55) 0%,
+        rgba(70,180,255,.18) 45%,
+        transparent 75%
+    );
+
+    animation-timing-function:linear;
+    animation-iteration-count:infinite;
+}
+
+/* ----------------------------------------------------------
+   Floating searchlight orbs
+-----------------------------------------------------------*/
+
+.hero-spotlight{
+    position:absolute;
+    width:320px;
+    height:320px;
+    border-radius:50%;
+    pointer-events:none;
+
+    filter:blur(65px);
+    will-change:transform;
+
+    background:radial-gradient(
+        circle,
+        rgba(70,180,255,.60) 0%,
+        rgba(70,180,255,.30) 38%,
+        rgba(70,180,255,.10) 60%,
+        transparent 78%
+    );
+
+    animation:patrol 7s linear infinite;
+}
+
+/* Main light */
+.hero-spotlight-1{
+    top:5%;
+    left:8%;
+    animation-delay:0s;
+    opacity:.7;
+}
+
+/* Top right */
+.hero-spotlight-2{
+    top:8%;
+    right:10%;
+    animation-delay:-1.4s;
+    opacity:.55;
+}
+
+/* Middle */
+.hero-spotlight-3{
+    top:40%;
+    left:42%;
+    width:260px;
+    height:260px;
+    animation-delay:-2.8s;
+    opacity:.45;
+}
+
+/* Bottom left */
+.hero-spotlight-4{
+    bottom:10%;
+    left:10%;
+    animation-delay:-4.2s;
+    opacity:.55;
+}
+
+/* Bottom right */
+.hero-spotlight-5{
+    bottom:8%;
+    right:8%;
+    animation-delay:-5.6s;
+    opacity:.65;
+}
+
+@keyframes patrol{
+
+    0%{
+        transform:
+            translate(0px,0px)
+            scale(1);
+    }
+
+    15%{
+        transform:
+            translate(180px,-80px)
+            scale(1.15);
+    }
+
+    30%{
+        transform:
+            translate(360px,80px)
+            scale(.95);
+    }
+
+    45%{
+        transform:
+            translate(140px,220px)
+            scale(1.2);
+    }
+
+    60%{
+        transform:
+            translate(-140px,120px)
+            scale(.9);
+    }
+
+    75%{
+        transform:
+            translate(-260px,-120px)
+            scale(1.1);
+    }
+
+    90%{
+        transform:
+            translate(-80px,-220px)
+            scale(1);
+    }
+
+    100%{
+        transform:
+            translate(0px,0px)
+            scale(1);
+    }
+
 }

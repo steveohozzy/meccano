@@ -6,68 +6,81 @@ import { storyblokEditable } from "@storyblok/react/rsc";
 import { resolveLink } from "@/lib/storyblok";
 
 export default function HomeHero({ blok }) {
-  const [scrollY, setScrollY] = useState(0);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  const media = blok.BackgroundImage?.filename || "";
+  const isVideo = /\.(mp4|webm|ogg|mov)$/i.test(media);
 
   return (
     <section
       {...storyblokEditable(blok)}
       id="top"
-      className="relative overflow-hidden bg-gradient-to-b from-[#0a2514] via-[#0d2f1a] to-[#071a0f] text-white"
+      className="relative overflow-hidden border-b border-line bg-grid"
     >
-      {/* MASSIVE, HIGHLY VISIBLE glowing orbs that drift heavily across the hero section on scroll */}
-      <div 
-        className="pointer-events-none absolute -left-20 top-0 w-[500px] h-[500px] rounded-full bg-emerald-400 opacity-60 blur-[90px] transition-transform duration-75 ease-out" 
-        style={{ transform: `translate(${scrollY * 0.4}px, ${scrollY * 0.5}px) scale(${0.6 + scrollY * 0.001})` }}
-        aria-hidden 
-      />
-      <div 
-        className="pointer-events-none absolute right-[-10%] top-1/3 w-[500px] h-[500px] rounded-full bg-green-300 opacity-50 blur-[100px] transition-transform duration-75 ease-out" 
-        style={{ transform: `translate(-${scrollY * 0.8}px, -${scrollY * 0.4}px)` }}
-        aria-hidden 
-      />
+      <div className="hero-spotlight hero-spotlight-1" />
+      <div className="hero-spotlight hero-spotlight-2" />
+      <div className="hero-spotlight hero-spotlight-3" />
+      <div className="hero-spotlight hero-spotlight-4" />
+      <div className="hero-spotlight hero-spotlight-5" />
+            
+      <div className="relative mx-auto grid max-w-[1400px] grid-cols-1 items-center gap-3 px-4 md:px-8 lg:grid-cols-12">
+        {/* Left: copy */}
+        <div className="flex flex-col justify-center py-14 lg:col-span-6 lg:py-28">
+          <div className="mb-6 flex items-center gap-3">
+            <span className="flex items-center gap-2 rounded-full border border-red-500 bg-red-600/25 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-red-100 shadow-[0_0_20px_rgba(220,38,38,.2)] backdrop-blur-md">
+  <span className="h-1.5 w-1.5 rounded-full bg-red-400" />
+  {blok.Tagline || "Tagline"}
+</span>
+          </div>
 
-      <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 pb-16 pt-10 md:px-8 lg:grid-cols-2 lg:gap-12 lg:pb-24 lg:pt-16 relative z-10">
-        
-        {/* Left Column: Text & CTAs */}
-        <div className="relative z-10 space-y-6">
-          <span className="inline-flex items-center gap-2.5 rounded-full bg-white/10 border border-white/15 px-4 py-2 text-xs font-black uppercase tracking-widest text-emerald-300 backdrop-blur-xl shadow-lg">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            {blok.Tagline || "tagline"}
-          </span>
 
-          <h1 className="text-balance font-heading text-5xl font-black leading-[1.05] tracking-tight text-white md:text-6xl lg:text-7xl">
+          <h1 className="text-balance text-5xl font-extrabold leading-[0.9] tracking-tight sm:text-6xl lg:text-7xl xl:text-8xl">
             {blok.Title || "hero text"}{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-green-400 to-teal-200">
+            <span className="bg-gradient-to-r from-red-800 to-red-500 bg-clip-text text-transparent">
               {blok.TitleAccent || "hero accent"}
             </span>
           </h1>
 
-          <p className="max-w-xl text-pretty text-lg font-normal leading-relaxed text-emerald-100/80">
+          <p className="mt-6 max-w-md text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
             {blok.Subtitle || "subtitle"}
           </p>
 
           {blok.CtaPrimaryText && (
-            <div className="flex flex-wrap gap-4 pt-2">
-              {/* GLOSSY EMERALD PRIMARY BUTTON */}
+            <div className="mt-9 flex flex-wrap items-center gap-3">
               <Link
                 href={resolveLink(blok.CtaPrimaryLink) || "#"}
-                className="rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-400 hover:from-emerald-400 hover:to-emerald-300 border border-emerald-300/40 px-8 py-4 text-sm font-black text-[#071a0f] backdrop-blur-xl shadow-xl shadow-emerald-950/60 transition-all duration-200 transform hover:-translate-y-0.5 text-center"
+                className="
+                  group
+                  inline-flex
+                  items-center
+                  gap-2
+                  rounded-md
+                  bg-gradient-to-b
+                  from-red-700
+                  to-red-800
+                  px-6
+                  py-3.5
+                  font-mono
+                  text-xs
+                  font-semibold
+                  uppercase
+                  tracking-[0.15em]
+                  text-white
+                  border
+                  border-red-400/40
+                  shadow-[0_0_25px_rgba(220,38,38,.35)]
+                  transition-all
+                  hover:brightness-110
+                  hover:-translate-y-0.5
+                "
               >
                 {blok.CtaPrimaryText}
-              </Link>
+</Link>
 
               {blok.CtaSecondaryText && (
                 <Link
                   href={resolveLink(blok.CtaSecondaryLink) || "#"}
-                  className="rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 px-8 py-4 text-sm font-bold text-white backdrop-blur-xl transition-all duration-200 text-center"
+                  className="inline-flex items-center gap-2 rounded-md border border-white/15 bg-surface px-6 py-3.5 font-mono text-xs uppercase tracking-[0.15em] text-muted-foreground transition-all hover:bg-black hover:border-red-500/60 hover:text-white hover:brightness-110
+                  hover:-translate-y-0.5 shadow-[0_0_20px_rgba(70,180,255,.2)] hover:shadow-[0_0_35px_rgba(70,180,255,.35)]"
                 >
                   {blok.CtaSecondaryText}
                 </Link>
@@ -76,13 +89,13 @@ export default function HomeHero({ blok }) {
           )}
 
           {blok.Stats?.length ? (
-            <dl className="mt-10 pt-8 border-t border-white/10 flex flex-wrap gap-10">
+            <dl className="mt-14 grid max-w-md grid-cols-3 gap-4 border-t border-line pt-6">
               {blok.Stats.map((stat, i) => (
                 <div key={i}>
-                  <dt className="font-heading text-3xl font-black text-white">
+                  <dt className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
                     {stat.Value}
                   </dt>
-                  <dd className="text-xs font-semibold uppercase tracking-wider text-emerald-300 mt-1">
+                  <dd className="mt-1 font-mono text-[10px] uppercase leading-tight tracking-[0.12em] text-electric">
                     {stat.Label}
                   </dd>
                 </div>
@@ -91,37 +104,73 @@ export default function HomeHero({ blok }) {
           ) : null}
         </div>
 
-        {/* Right Column: Image & Floating Stamp */}
-        <div className="relative z-10 flex justify-center">
-          <div className="relative w-full max-w-md lg:max-w-none">
-            
-            <div className="relative aspect-[9/10] overflow-hidden rounded-[2.5rem] border border-white/15 bg-white/5 p-3 backdrop-blur-2xl shadow-2xl lg:aspect-[4/5]">
-              <div className="relative h-full w-full rounded-[2rem] overflow-hidden">
-                <Image
-                  src={blok.BackgroundImage?.filename || "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?q=80&w=1000&auto=format&fit=crop"}
-                  alt={blok.BackgroundImage?.alt || "Hero image"}
-                  fill
-                  priority
-                  quality={85}
-                  sizes="(max-width:640px) 100vw, (max-width:1024px) 500px, 500px"
-                  className="object-cover transform hover:scale-105 transition-transform duration-700"
-                />
+
+        <div className="relative lg:col-span-6">
+          <div className="relative h-[420px] overflow-visible lg:h-[700px]">
+
+            {/* Metallic frame */}
+            <div className="
+              absolute inset-0
+              rounded-[2.5rem]
+              p-3
+              border border-red-500/40
+              bg-gradient-to-br
+              from-red-600/20
+              via-white/10
+              to-red-600/20
+              shadow-[0_0_35px_rgba(80,180,255,0.18),0_25px_80px_rgba(0,0,0,0.45)]
+              ">
+
+              {/* Inner bevel */}
+              <div className="relative h-full w-full overflow-hidden rounded-[2.3rem] border border-white/10 bg-black/20 backdrop-blur-sm">
+
+              {blok.ImageStampTitle && (
+                <>
+                  <p
+  className="absolute bottom-6 right-3 z-10 font-mono text-xs uppercase tracking-[0.2em] text-red-600"
+  style={{
+    textShadow: `
+      0 0 6px rgba(239,68,68,.9),
+      0 0 12px rgba(220,38,38,.7),
+      0 0 24px rgba(185,28,28,.45)
+    `
+  }}
+>
+  {blok.ImageStampTitle}
+</p>
+                </>
+              )}
+
+                {isVideo ? (
+                  <video
+                    src={media}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                ) : (
+                  <Image
+                    src={media}
+                    alt={blok.BackgroundImage?.alt || ""}
+                    fill
+                    priority
+                    className="object-cover"
+                  />
+                )}
+
+                {/* subtle gloss */}
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent" />
+
+                {/* edge highlight */}
+                <div className="pointer-events-none absolute inset-[1px] rounded-[2.2rem] ring-1 ring-white/10" />
+
               </div>
             </div>
 
-            {blok.ImageStampTitle && (
-              <div className="absolute -bottom-6 -left-6 hidden rounded-2xl bg-gradient-to-br from-emerald-900/90 via-[#0a2514]/90 to-emerald-950/90 border border-emerald-400/30 px-6 py-5 shadow-2xl backdrop-blur-2xl sm:block">
-                <p className="font-heading text-lg font-black text-white">
-                  {blok.ImageStampTitle}
-                </p>
-                <p className="text-xs font-semibold text-emerald-300 mt-0.5">
-                  {blok.ImageStampText}
-                </p>
-              </div>
-            )}
           </div>
         </div>
-
       </div>
     </section>
   );

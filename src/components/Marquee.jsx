@@ -42,7 +42,7 @@ export default function Marquee({ blok }) {
   return (
     <section
       {...storyblokEditable(blok)}
-      className="overflow-hidden border-y border-border bg-foreground py-4 text-background"
+      className="overflow-hidden border-b border-t border-red-800/50 bg-surface py-3.5 text-foreground"
     >
       <div
         key={distance}
@@ -59,17 +59,11 @@ export default function Marquee({ blok }) {
         {looped.map((panel, i) => (
           <span
             key={`${panel._uid}-${i}`}
-            className="flex shrink-0 items-center pr-8"
+            className="mx-6 flex items-center gap-6 font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground"
           >
-            <span className="font-heading text-xl font-medium md:text-2xl">
               {panel.Title}
-            </span>
-
-            <span
-              className="pl-8 text-accent"
-              aria-hidden
-            >
-              ✦
+            <span aria-hidden className="text-red-500">
+              /
             </span>
           </span>
         ))}
