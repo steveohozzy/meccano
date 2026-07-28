@@ -68,8 +68,8 @@ export default function PanelBannerSection({ blok }) {
         <div className="px-4 py-14 md:px-10 lg:py-24">
 
           {blok.eyebrow && (
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-red-500">
-              {blok.eyebrow}
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-red-500 inline-flex items-center gap-2">
+              <Bolt className="h-4 w-4" /><span>{blok.eyebrow}</span><Bolt className="h-4 w-4" />
             </span>
           )}
 
