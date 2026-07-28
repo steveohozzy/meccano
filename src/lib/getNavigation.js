@@ -3,25 +3,45 @@ import { getStoryblokApi } from "./storyblok";
 export async function getNavigation() {
   const storyblokApi = getStoryblokApi();
 
-  const { data } = await storyblokApi.get("cdn/links", {
-    version: "draft",
-  });
+  const { data } = await storyblokApi.get(
+    "cdn/stories",
+    {
+      version: "draft",
+      per_page: 100,
+    }
+  );
 
-  return Object.values(data.links)
-    .filter((link) => {
-      const slug = link.slug;
+  return data.stories
+    .filter((story) => {
 
-      if (!slug) return false;
+      // only root pages
+      if (story.full_slug.includes("/")) {
 
-      if (slug === "home") return false;
+        // allow folder landing pages like blog/
+        if (!story.is_startpage) {
+          return false;
+        }
+      }
 
-      if (slug.startsWith("globals")) return false;
 
-      if (slug.startsWith("footer")) return false;
+      // remove home
+      if (story.slug === "home") {
+        return false;
+      }
+
+
+      // remove globals
+      if (story.full_slug.startsWith("globals")) {
+        return false;
+      }
+
 
       return true;
+
     })
-    .filter((link) => {
-      return !link.slug.includes("/") || link.slug.split("/").length === 1;
-    });
+    .map((story) => ({
+      id: story.id,
+      name: story.name,
+      slug: story.full_slug.replace(/\/$/, ""),
+    }));
 }
