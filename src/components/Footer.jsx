@@ -61,6 +61,8 @@ export default async function Footer() {
       {/* Top */}
       <div className="mx-auto grid max-w-7xl gap-12 px-4 py-16 md:grid-cols-3 md:px-8">
 
+        <p>hheellloooo</p>
+
         {/* Brand */}
         <div>
           <Image
