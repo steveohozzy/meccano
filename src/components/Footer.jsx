@@ -56,7 +56,11 @@ export default async function Footer() {
   ].filter((social) => social.url);
 
   return (
-    <footer className="mt-auto overflow-hidden border-t border-border bg-[#efe8df]">
+    <footer className="relative mt-auto overflow-hidden border-t border-line bg-background">
+      <div
+        className="pointer-events-none absolute inset-0 bg-grid opacity-40"
+        aria-hidden
+      />
 
       {/* Top */}
       <div className="mx-auto grid max-w-7xl gap-12 px-4 py-16 md:grid-cols-3 md:px-8">
@@ -65,17 +69,16 @@ export default async function Footer() {
         <div>
           <Image
             src={
-              footer.logo?.filename ||
-              "https://www.elc.co.uk/medias/2026-elc-brands-logo-elc-png.png?context=bWFzdGVyfHJvb3R8NTgwNzV8aW1hZ2UvcG5nfGFEazRMMmcwTXk4eE1qYzBOamMxTURJNU5qQTVOQzh5TURJMkxXVnNZeTFpY21GdVpITXRiRzluYnkxbGJHTXRjRzVuTG5CdVp3fDA1NDhhMjNlNjRhYmQ1YmE1YWJkYjY0NWI0MDA5NTgwNmJhY2ZjM2Y1NDU4OTEzMDNhMDYwZWU5ZGI5OTAwNjU"
+              footer.logo?.filename
             }
-            alt="ELC"
+            alt="MEccano"
             width={180}
             height={80}
             className="h-auto"
           />
 
           {footer.brandText && (
-            <p className="mt-6 max-w-sm leading-relaxed text-muted-foreground">
+            <p className="mt-6 max-w-sm text-muted-foreground leading-relaxed">
               {footer.brandText}
             </p>
           )}
@@ -95,16 +98,20 @@ export default async function Footer() {
                     }
                     target="_blank"
                     className="
-                      flex
-                      size-12
-                      items-center
-                      justify-center
-                      rounded-full
-                      bg-white
-                      shadow-sm
-                      transition-all
-                      hover:-translate-y-1
-                      hover:shadow-lg
+                      group
+flex
+size-11
+items-center
+justify-center
+rounded-md
+border
+border-white/10
+bg-surface
+card-gloss
+transition-all
+duration-300
+hover:border-red-500/40
+hover:ring-glow
                     "
                   >
                     {
@@ -120,9 +127,15 @@ export default async function Footer() {
 
         {/* Navigation */}
         <div>
-          <h3 className="mb-6 font-heading text-xl text-primary">
-            Explore
-          </h3>
+          <p className="
+            font-mono
+            text-[10px]
+            uppercase
+            tracking-[0.2em]
+            text-red-500
+            ">
+            Navigation
+          </p>
 
           <div className="grid gap-3">
 
@@ -137,10 +150,17 @@ export default async function Footer() {
                     group
                     flex
                     items-center
-                    gap-2
+                    justify-between
+                    border-b
+                    border-white/10
+                    py-3
+                    font-mono
+                    text-xs
+                    uppercase
+                    tracking-[0.15em]
                     text-muted-foreground
-                    transition-colors
-                    hover:text-primary
+                    transition
+                    hover:text-red-400
                   "
                 >
                   <span className="transition-transform group-hover:translate-x-1">
@@ -160,15 +180,18 @@ export default async function Footer() {
 
           <div
             className="
-              rounded-[2rem]
-              bg-primary
+              rounded-2xl
+              border
+              border-red-500/30
+              bg-red-600/10
+              card-gloss
               p-8
-              text-primary-foreground
-            "
+              backdrop-blur
+              "
           >
 
             {footer.ctaTitle && (
-              <h3 className="font-heading text-2xl">
+              <h3 className="font-heading text-3xl font-bold">
                 {footer.ctaTitle}
               </h3>
             )}
@@ -185,16 +208,26 @@ export default async function Footer() {
                   footer.ctaButtonLink
                 )}
                 className="
-                  mt-6
                   inline-flex
-                  rounded-full
-                  bg-white
+                  items-center
+                  gap-2
+                  rounded-md
+                  bg-gradient-to-b
+                  from-red-700
+                  to-red-800
                   px-6
-                  py-3
-                  font-semibold
-                  text-primary
-                  transition-transform
-                  hover:-translate-y-1
+                  py-3.5
+                  font-mono
+                  text-xs
+                  uppercase
+                  tracking-[0.15em]
+                  text-white
+                  border
+                  border-red-400/40
+                  shadow-[0_0_25px_rgba(220,38,38,.35)]
+                  transition-all
+                  hover:-translate-y-0.5
+                  mt-5
                 "
               >
                 {footer.ctaButtonText}
@@ -209,13 +242,13 @@ export default async function Footer() {
       </div>
 
       {/* Bottom */}
-      <div className="border-t border-border">
+      <div className="border-t border-line">
 
         <div
           className="
             mx-auto
             flex
-            max-w-7xl
+            max-w-[1400px]
             flex-col
             items-center
             justify-between
@@ -230,11 +263,7 @@ export default async function Footer() {
         >
 
           <p>
-            ©{" "}
-            {new Date().getFullYear()}
-            {" "}
-            ELC. All rights
-            reserved.
+            © {new Date().getFullYear()} Meccano. Built for engineers.
           </p>
 
           <div className="flex gap-6">
@@ -243,6 +272,15 @@ export default async function Footer() {
               href={resolveLink(
                 footer.privacyLink
               )}
+              className="
+                font-mono
+                text-[11px]
+                uppercase
+                tracking-[0.15em]
+                text-muted-foreground
+                transition
+                hover:text-red-400
+                "
             >
               Privacy
             </Link>
@@ -251,6 +289,15 @@ export default async function Footer() {
               href={resolveLink(
                 footer.termsLink
               )}
+              className="
+                font-mono
+                text-[11px]
+                uppercase
+                tracking-[0.15em]
+                text-muted-foreground
+                transition
+                hover:text-red-400
+                "
             >
               Terms
             </Link>
@@ -259,6 +306,15 @@ export default async function Footer() {
               href={resolveLink(
                 footer.cookiesLink
               )}
+              className="
+                font-mono
+                text-[11px]
+                uppercase
+                tracking-[0.15em]
+                text-muted-foreground
+                transition
+                hover:text-red-400
+                "
             >
               Cookies
             </Link>
