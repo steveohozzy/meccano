@@ -22,9 +22,9 @@ export default function HomeHero({ blok }) {
       <div className="hero-spotlight hero-spotlight-4" />
       <div className="hero-spotlight hero-spotlight-5" />
             
-      <div className="relative mx-auto grid max-w-[1400px] grid-cols-1 items-center gap-3 px-4 md:px-8 lg:grid-cols-12">
+      <div className="relative mx-auto grid max-w-[1400px] grid-cols-1 items-center gap-8 px-4 md:px-8 lg:grid-cols-12">
         {/* Left: copy */}
-        <div className="flex flex-col justify-center py-14 lg:col-span-6 lg:py-28">
+        <div className="flex flex-col justify-center py-14 lg:col-span-6 lg:order-1 lg:py-28">
           <div className="mb-6 flex items-center gap-3">
             <span className="flex items-center gap-2 rounded-full border border-red-500 bg-red-600/25 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-red-100 shadow-[0_0_20px_rgba(220,38,38,.2)] backdrop-blur-md">
   <span className="h-1.5 w-1.5 rounded-full bg-red-400" />
@@ -40,7 +40,36 @@ export default function HomeHero({ blok }) {
             </span>
           </h1>
 
-          <p className="mt-6 max-w-md text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
+          {/* Mobile Media */}
+          <div className="relative mt-8 lg:hidden">
+            <div className="relative h-[320px] overflow-hidden rounded-[2.5rem] border border-red-500/40 p-3 bg-gradient-to-br from-red-600/20 via-white/10 to-red-600/20 shadow-[0_0_35px_rgba(80,180,255,0.18)]">
+
+              <div className="relative h-full w-full overflow-hidden rounded-[2.3rem] border border-white/10 bg-black/20">
+
+                {isVideo ? (
+                  <video
+                    src={media}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                ) : (
+                  <Image
+                    src={media}
+                    alt={blok.BackgroundImage?.alt || ""}
+                    fill
+                    priority
+                    className="object-cover"
+                  />
+                )}
+
+              </div>
+            </div>
+          </div>
+
+          <p className="mt-6  text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
             {blok.Subtitle || "subtitle"}
           </p>
 
@@ -89,7 +118,7 @@ export default function HomeHero({ blok }) {
           )}
 
           {blok.Stats?.length ? (
-            <dl className="mt-14 grid max-w-md grid-cols-3 gap-4 border-t border-line pt-6">
+            <dl className="mt-14 grid  grid-cols-3 gap-4 border-t border-line pt-6">
               {blok.Stats.map((stat, i) => (
                 <div key={i}>
                   <dt className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
@@ -105,8 +134,8 @@ export default function HomeHero({ blok }) {
         </div>
 
 
-        <div className="relative lg:col-span-6">
-          <div className="relative h-[420px] overflow-visible lg:h-[700px]">
+        <div className="relative hidden lg:col-span-6 lg:block">
+          <div className="relative h-[440px] overflow-visible lg:h-[460px]">
 
             {/* Metallic frame */}
             <div className="

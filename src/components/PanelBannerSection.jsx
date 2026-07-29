@@ -73,12 +73,12 @@ export default function PanelBannerSection({ blok }) {
             </span>
           )}
 
-          <h2 className="mt-3 max-w-md text-balance text-4xl font-bold tracking-tight sm:text-5xl">
+          <h2 className="mt-3  text-balance text-4xl font-bold tracking-tight sm:text-5xl">
             {blok.Title}
           </h2>
 
           {blok.Intro && (
-            <p className="mt-4 max-w-md text-pretty leading-relaxed text-muted-foreground">
+            <p className="mt-4  text-pretty leading-relaxed text-muted-foreground">
               {blok.Intro}
             </p>
           )}

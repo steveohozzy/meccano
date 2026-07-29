@@ -58,7 +58,7 @@ export default function ImageTextBanner({ blok }) {
           </h2>
 
           {blok.Intro && (
-            <p className="mt-5 max-w-md text-pretty leading-relaxed text-muted-foreground">
+            <p className="mt-5  text-pretty leading-relaxed text-muted-foreground">
               {blok.Intro}
             </p>
           )}
