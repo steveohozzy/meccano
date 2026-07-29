@@ -24,7 +24,7 @@ export default function HomeHero({ blok }) {
             
       <div className="relative mx-auto grid max-w-[1400px] grid-cols-1 items-center gap-8 px-4 md:px-8 lg:grid-cols-12">
         {/* Left: copy */}
-        <div className="flex flex-col justify-center py-14 lg:col-span-6 lg:order-1 lg:py-28">
+        <div className="flex flex-col justify-center py-14 lg:col-span-6 lg:py-28">
           <div className="mb-6 flex items-center gap-3">
             <span className="flex items-center gap-2 rounded-full border border-red-500 bg-red-600/25 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-red-100 shadow-[0_0_20px_rgba(220,38,38,.2)] backdrop-blur-md">
   <span className="h-1.5 w-1.5 rounded-full bg-red-400" />
