@@ -11,7 +11,7 @@ export default function CollectionPreview({ blok }) {
   return (
     <section
       {...storyblokEditable(blok)}
-      id="sets"
+      id={blok.AnchorId || undefined}
       className="border-b border-line"
     >
       <div className="mx-auto max-w-[1400px] px-4 md:px-8">

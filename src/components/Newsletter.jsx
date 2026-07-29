@@ -19,7 +19,7 @@ export default function Newsletter({ blok }) {
   return (
     <section
       {...storyblokEditable(blok)}
-      id="newsletter"
+      id={blok.AnchorId || undefined}
       className="border-b border-line"
     >
       <div className="mx-auto max-w-[1400px] px-4 py-14 md:px-8 lg:py-20">

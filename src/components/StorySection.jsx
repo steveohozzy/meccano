@@ -8,7 +8,7 @@ export default function StorySection({ blok }) {
   return (
     <section
       {...storyblokEditable(blok)}
-      id="story"
+      id={blok.AnchorId || undefined}
       className="mx-auto max-w-7xl px-4 py-20 md:px-8 lg:py-28"
     >
       <div className={`grid items-center gap-12 lg:grid-cols-2`}>

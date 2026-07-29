@@ -42,6 +42,7 @@ export default function Marquee({ blok }) {
   return (
     <section
       {...storyblokEditable(blok)}
+      id={blok.AnchorId || undefined}
       className="overflow-hidden border-b border-t border-red-800/50 bg-surface py-3.5 text-foreground"
     >
       <div

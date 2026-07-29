@@ -1,35 +1,35 @@
 import Link from "next/link";
 import Image from "next/image";
 
-import { getNavigation } from "@/lib/getNavigation";
-import {
-  getStoryblokApi,
-  resolveLink,
-} from "@/lib/storyblok";
+import { getStoryblokApi, resolveLink } from "@/lib/storyblok";
 
 import InstagramIcon from "./icons/InstagramIcon";
 import FacebookIcon from "./icons/FacebookIcon";
 import YoutubeIcon from "./icons/YouTubeIcon";
 
 export default async function Footer() {
-  const menuItems =
-    await getNavigation();
+  const storyblokApi = getStoryblokApi();
 
-  const storyblokApi =
-    getStoryblokApi();
-
-  const { data } =
-    await storyblokApi.get(
-      "cdn/stories/globals/footer",
-      {
-        version: "draft",
-      }
-    );
+  const [{ data: footerData }, { data: headerData }] = await Promise.all([
+    storyblokApi.get("cdn/stories/globals/footer", {
+      version: "draft",
+    }),
+    storyblokApi.get("cdn/stories/globals/header", {
+      version: "draft",
+    }),
+  ]);
 
   const footer =
-  data?.story?.content?.body?.find(
-    (blok) => blok.component === "footer"
-  ) || {};
+    footerData?.story?.content?.body?.find(
+      (blok) => blok.component === "footer"
+    ) || {};
+
+  const header =
+    headerData?.story?.content?.body?.find(
+      (blok) => blok.component === "HeaderSettings"
+    ) || {};
+
+  const menuItems = header.Navigation || [];
 
   const socials = [
     {
@@ -63,7 +63,7 @@ export default async function Footer() {
       />
 
       {/* Top */}
-      <div className="mx-auto grid max-w-7xl gap-12 px-4 py-16 md:grid-cols-3 md:px-8">
+      <div className="mx-auto grid max-w-[1400px] gap-10 px-4 py-14 md:grid-cols-4 md:px-8">
 
         {/* Brand */}
         <div>
@@ -126,54 +126,33 @@ hover:ring-glow
         </div>
 
         {/* Navigation */}
-        <div>
-          <p className="
-            font-mono
-            text-[10px]
-            uppercase
-            tracking-[0.2em]
-            text-red-500
-            ">
-            Navigation
-          </p>
+<div className="md:col-span-2">
+  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-red-500">
+    Navigation
+  </p>
 
-          <div className="grid gap-3">
+  <div className="mt-4 grid grid-cols-2 gap-x-8 gap-y-3">
+    {menuItems.map((item) => {
+      const href = item.Link
+        ? resolveLink(item.Link)
+        : item.HomepageAnchor
+          ? `/#${item.HomepageAnchor}`
+          : "/";
 
-            {menuItems.map(
-              (item) => (
-                <Link
-                  key={
-                    item.id
-                  }
-                  href={`/${item.slug}`}
-                  className="
-                    group
-                    flex
-                    items-center
-                    justify-between
-                    border-b
-                    border-white/10
-                    py-3
-                    font-mono
-                    text-xs
-                    uppercase
-                    tracking-[0.15em]
-                    text-muted-foreground
-                    transition
-                    hover:text-red-400
-                  "
-                >
-                  <span className="transition-transform group-hover:translate-x-1">
-                    →
-                  </span>
-
-                  {item.name}
-                </Link>
-              )
-            )}
-
-          </div>
-        </div>
+      return (
+        <Link
+          key={item._uid}
+          href={href}
+          target={item.OpenInNewTab ? "_blank" : undefined}
+          className="group flex items-center gap-2 py-1 font-mono text-xs uppercase tracking-[0.15em] text-muted-foreground transition hover:text-red-400"
+        >
+          <span className="transition-transform group-hover:translate-x-1">→</span>
+          <span className="truncate">{item.Label}</span>
+        </Link>
+      );
+    })}
+  </div>
+</div>
 
         {/* CTA */}
         <div>

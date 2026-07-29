@@ -29,6 +29,7 @@ export default function PanelBannerSection({ blok }) {
   return (
     <section
       {...storyblokEditable(blok)}
+      id={blok.AnchorId || undefined}
       className="relative overflow-hidden border-b border-line bg-background"
     >
       {blok.ShowGrid && (

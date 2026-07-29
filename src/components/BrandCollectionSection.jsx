@@ -11,6 +11,7 @@ export default function BrandCollectionSection({ blok }) {
   return (
     <section
       {...storyblokEditable(blok)}
+      id={blok.AnchorId || undefined}
       className="relative overflow-hidden border-b border-line bg-background"
     >
       {blok.ShowGrid && (
@@ -139,9 +140,9 @@ export default function BrandCollectionSection({ blok }) {
                 <div className="flex flex-1 items-end justify-between p-5">
 
                   <div>
-                    <h3 className="text-lg font-bold text-red-500">
+                    <div className="md:text-lg font-bold text-red-500">
                       {set.Name}
-                    </h3>
+                    </div>
 
                     <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
                       <span className="text-electric">{set.Parts}</span> Parts
@@ -150,8 +151,10 @@ export default function BrandCollectionSection({ blok }) {
 
                   <span className="
                     flex
-                    h-10
-                    w-10
+                    w-8
+                    h-8
+                    md:h-10
+                    md:w-10
                     items-center
                     justify-center
                     rounded-md
@@ -160,8 +163,9 @@ export default function BrandCollectionSection({ blok }) {
                     bg-red-600/50
                     text-red-50
                     shadow-[0_0_25px_rgba(220,38,38,.35)]
+                    shrink-0
                   ">
-                    <ArrowUpRight className="h-4 w-4" />
+                    <ArrowUpRight className="h-4 w-4 shrink-0" />
                   </span>
 
                 </div>

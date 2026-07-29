@@ -12,7 +12,7 @@ export default function Blog({ blok }) {
   return (
     <section
       {...storyblokEditable(blok)}
-      id="blog"
+      id={blok.AnchorId || undefined}
       className="border-b border-line"
     >
 
