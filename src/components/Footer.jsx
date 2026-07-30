@@ -148,25 +148,25 @@ hover:ring-glow
         </div>
 
         {/* Navigation */}
-<div className="md:col-span-2">
-  <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-red-500">
-    Navigation
-  </p>
+        <div className="md:col-span-2">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-red-500">
+            Navigation
+          </p>
 
-  <div className="mt-4 grid grid-cols-2 gap-x-8 gap-y-3">
-    {menuItems.map((item) => (
-      <Link
-        key={item._uid}
-        href={getNavHref(item)}
-        target={item.OpenInNewTab ? "_blank" : undefined}
-        className="group flex items-center gap-2 py-1 font-mono text-xs uppercase tracking-[0.15em] text-muted-foreground transition hover:text-red-400"
-      >
-        <span className="transition-transform group-hover:translate-x-1">→</span>
-        <span className="truncate">{item.Label}</span>
-      </Link>
-    ))}
-  </div>
-</div>
+          <div className="mt-4 grid grid-cols-2 gap-x-8 gap-y-3">
+            {menuItems.map((item) => (
+              <Link
+                key={item._uid}
+                href={getNavHref(item)}
+                target={item.OpenInNewTab ? "_blank" : undefined}
+                className="group flex items-center gap-2 py-1 font-mono text-xs uppercase tracking-[0.15em] text-muted-foreground transition hover:text-red-400"
+              >
+                <span className="transition-transform group-hover:translate-x-1">→</span>
+                <span className="truncate">{item.Label}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
 
         {/* CTA */}
         <div>

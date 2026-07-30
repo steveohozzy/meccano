@@ -16,6 +16,12 @@ export default function DiscoverFilters({ products }) {
 
   const productsPerPage = 40;
 
+  const displayBrand = (brandName) => {
+    const normalized = brandName?.trim().toLowerCase();
+
+    return normalized === "meccano" ? "heritage" : brandName;
+  };
+
   useEffect(() => {
     setCurrentPage(1);
   }, [search, brand, type, age]);
@@ -32,7 +38,13 @@ export default function DiscoverFilters({ products }) {
   };
 
   const brands = useMemo(() => {
-    return [...new Set(products.map((p) => p.content.brand).filter(Boolean))].sort();
+    return [
+      ...new Set(
+        products
+          .map((p) => displayBrand(p.content.brand))
+          .filter(Boolean)
+      ),
+    ].sort();
   }, [products]);
 
   const types = useMemo(() => {
@@ -63,7 +75,7 @@ export default function DiscoverFilters({ products }) {
           c.title?.toLowerCase().includes(search.toLowerCase());
 
         const matchesBrand =
-          !brand || c.brand === brand;
+          !brand || displayBrand(c.brand) === brand;
 
         const matchesType =
           !type || c.type === type;

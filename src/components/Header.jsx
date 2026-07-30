@@ -83,11 +83,11 @@ export default function Header({ blok }) {
       />
 
       <aside
-        className={`fixed right-0 top-0 z-[60] flex h-screen w-full max-w-[420px] flex-col overflow-hidden bg-gradient-to-b from-red-950 via-background to-background shadow-[0_0_80px_rgba(220,38,38,.25)] transition-transform duration-500 ease-out ${
+        className={`fixed right-0 top-0 z-[60] flex h-screen w-full max-w-[420px] flex-col overflow-hidden bg-gradient-to-b from-red-950 via-background to-background shadow-[0_0_80px_rgba(220,38,38,.25)] transition-transform duration-500 ease-out max-h-screen overflow-y-auto ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
       >
-        <div className="flex items-center justify-between px-8 py-8">
+        <div className="flex items-center justify-between px-8 pt-8">
           <div>
             <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-red-400">
               Explore
