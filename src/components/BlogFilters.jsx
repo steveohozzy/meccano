@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 
 import Link from "next/link";
 import Image from "next/image";
+import { ArrowUp, ArrowUpRight } from "lucide-react";
 
 export default function BlogFilters({ posts }) {
   const searchParams = useSearchParams();
@@ -86,84 +87,96 @@ export default function BlogFilters({ posts }) {
           <article
             key={post.uuid}
             className="
-              group overflow-hidden
-              rounded-[2rem]
-              border border-border
-              bg-card
+              group
+              relative
+              flex
+              flex-col
+              overflow-hidden
+              rounded-xl
+              border
+              border-white/10
+              bg-surface
+              card-gloss
               transition-all
-              hover:-translate-y-1
-              hover:shadow-xl
+              duration-300
+              hover:border-red-500/40
+              hover:ring-glow
             "
           >
             <Link href={`/${post.full_slug}`}>
-              {/* Image */}
-              <div className="relative aspect-[4/3] overflow-hidden">
+              <div className="
+                relative
+                aspect-[4/3]
+                overflow-hidden
+                bg-background/60
+                glow-blue
+                transition-shadow
+                group-hover:shadow-[0_0_35px_rgba(220,38,38,.35)]
+              ">
                 <Image
-                  src={
-                    post.content.featuredImage?.filename ||
-                    "/images/placeholder.jpg"
-                  }
-                  alt={
-                    post.content.title ||
-                    "Blog image"
-                  }
+                  src={post.content.featuredImage?.filename || "/images/placeholder.jpg"}
+                  alt={post.content.title || "Blog image"}
                   fill
                   sizes="(max-width:768px) 100vw, 33vw"
-                  className="
-                    object-cover
-                    transition-transform
-                    duration-500
-                    group-hover:scale-105
-                  "
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
 
                 {post.content.category?.[0] && (
-                  <span
-                    className="
-                      absolute left-4 top-4
-                      rounded-full
-                      bg-background/90
-                      px-3 py-1
-                      text-xs font-semibold
-                      backdrop-blur
-                    "
-                  >
+                  <span className="
+                    absolute
+                    bottom-3
+                    left-3
+                    rounded-md
+                    border
+                    border-red-500/40
+                    bg-background/70
+                    px-2
+                    py-1
+                    font-mono
+                    text-[10px]
+                    uppercase
+                    tracking-[0.15em]
+                    text-red-400
+                    backdrop-blur
+                  ">
                     {post.content.category[0]}
                   </span>
                 )}
               </div>
 
-              <div className="flex flex-col p-6">
+              <div className="flex flex-1 items-end justify-between p-5">
                 <div>
-                  <h3 className="font-heading text-xl font-semibold">
+                  <div className="line-clamp-2 font-bold text-red-500 md:text-lg">
                     {post.content.title}
-                  </h3>
+                  </div>
 
-                  {post.content.excerpt && (
-                    <p className="mt-3 line-clamp-3 text-muted-foreground">
-                      {post.content.excerpt}
-                    </p>
-                  )}
+                  {(post.content.readTime || post.content.readLength) && (
+            <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
+              <span className="text-electric">
+                {post.content.readTime || post.content.readLength}
+              </span> read
+            </p>
+          )}
                 </div>
 
-                <div className="mt-6 flex items-center justify-between border-t border-border pt-4">
-                  <span className="text-sm text-muted-foreground">
-                    {post.content.readLength || "5 min"} read
-                  </span>
-
-                  <span
-                    className="
-                      flex size-9 items-center justify-center
-                      rounded-full
-                      bg-muted
-                      transition-colors
-                      group-hover:bg-primary
-                      group-hover:text-primary-foreground
-                    "
-                  >
-                    →
-                  </span>
-                </div>
+                <span className="
+                  flex
+                  h-8
+                  w-8
+                  shrink-0
+                  items-center
+                  justify-center
+                  rounded-md
+                  border
+                  border-red-400/40
+                  bg-red-600/50
+                  text-red-50
+                  shadow-[0_0_25px_rgba(220,38,38,.35)]
+                  md:h-10
+                  md:w-10
+                ">
+                  <ArrowUpRight className="h-4 w-4" />
+                </span>
               </div>
             </Link>
           </article>

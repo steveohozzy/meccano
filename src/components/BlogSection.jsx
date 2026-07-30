@@ -102,17 +102,19 @@ export default function Blog({ blok }) {
             mt-10
             grid
             gap-5
-            md:grid-cols-3
+            grid-cols-2
+            lg:grid-cols-4
           "
         >
 
           {panels.map((p) => (
-
             <article
               key={p._uid}
               className="
                 group
                 relative
+                flex
+                flex-col
                 overflow-hidden
                 rounded-xl
                 border
@@ -122,164 +124,94 @@ export default function Blog({ blok }) {
                 transition-all
                 duration-300
                 hover:border-red-500/40
-                hover:shadow-[0_0_35px_rgba(220,38,38,.35)]
+                hover:ring-glow
               "
             >
-
               <Link href={`/blog/${p.Slug}`}>
-
-
-
                 {/* Image */}
-
                 <div
                   className="
                     relative
                     aspect-[4/3]
                     overflow-hidden
                     bg-background/60
+                    glow-blue
+                    transition-shadow
+                    group-hover:shadow-[0_0_35px_rgba(220,38,38,.35)]
                   "
                 >
-
                   {p.Image?.filename && (
-
                     <Image
                       src={p.Image.filename}
                       alt={p.Title || "Meccano news"}
                       fill
-                      sizes="(max-width:768px)100vw,33vw"
-                      className="
-                        object-cover
-                        transition-transform
-                        duration-700
-                        group-hover:scale-105
-                      "
+                      sizes="(max-width:768px) 100vw, 33vw"
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
-
                   )}
 
-
-                  {/* Overlay */}
-
-                  <div
-                    className="
-                      pointer-events-none
-                      absolute
-                      inset-0
-                      bg-gradient-to-t
-                      from-background/80
-                      via-transparent
-                      to-transparent
-                    "
-                  />
-
-
                   {p.Tag && (
-
                     <span
                       className="
                         absolute
-                        left-4
-                        top-4
-                        rounded-full
+                        bottom-3
+                        left-3
+                        rounded-md
                         border
                         border-red-500/40
-                        bg-red-600/50
-                        px-3
+                        bg-background/70
+                        px-2
                         py-1
                         font-mono
                         text-[10px]
                         uppercase
                         tracking-[0.15em]
-                        text-white
-                        backdrop-blur-md
+                        text-red-400
+                        backdrop-blur
                       "
                     >
                       {p.Tag}
                     </span>
-
                   )}
-
                 </div>
-
-
 
                 {/* Content */}
+                <div className="flex flex-1 items-end justify-between p-5">
+                  <div>
+                    <div className="line-clamp-2 font-bold text-red-500 md:text-lg">
+                      {p.Title}
+                    </div>
 
-                <div className="p-5">
-
-
-                  <h3
-                    className="
-                      text-xl
-                      font-bold
-                      leading-tight
-                      tracking-tight
-                      transition-colors
-                      group-hover:text-red-500
-                    "
-                  >
-                    {p.Title}
-                  </h3>
-
-
-
-                  <div
-                    className="
-                      mt-6
-                      flex
-                      items-center
-                      justify-between
-                      border-t
-                      border-white/10
-                      pt-4
-                    "
-                  >
-
-                    <span
-                      className="
-                        font-mono
-                        text-[10px]
-                        uppercase
-                        tracking-[0.15em]
-                        text-muted-foreground
-                      "
-                    >
-                      {p.ReadLength} read
-                    </span>
-
-
-
-                    <span
-                      className="
-                        flex
-                        h-9
-                        w-9
-                        items-center
-                        justify-center
-                        rounded-md
-                        bg-red-600
-                        text-white
-                        transition-transform
-                        group-hover:-translate-y-1
-                      "
-                    >
-
-                      <ArrowUpRight className="h-4 w-4" />
-
-                    </span>
-
-
+                    {p.ReadLength && (
+                      <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
+                        <span className="text-electric">{p.ReadLength}</span> read
+                      </p>
+                    )}
                   </div>
 
-
+                  <span
+                    className="
+                      flex
+                      h-8
+                      w-8
+                      shrink-0
+                      items-center
+                      justify-center
+                      rounded-md
+                      border
+                      border-red-400/40
+                      bg-red-600/50
+                      text-red-50
+                      shadow-[0_0_25px_rgba(220,38,38,.35)]
+                      md:h-10
+                      md:w-10
+                    "
+                  >
+                    <ArrowUpRight className="h-4 w-4" />
+                  </span>
                 </div>
-
-
               </Link>
-
             </article>
-
           ))}
 
         </div>

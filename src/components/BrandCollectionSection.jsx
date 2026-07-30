@@ -79,7 +79,8 @@ export default function BrandCollectionSection({ blok }) {
           <div className="mt-10 grid grid-cols-2 gap-4">
 
             {blok.Sets?.map((set) => (
-              <article
+              <Link
+                href={resolveLink(set.link)}
                 key={set._uid}
                 className="
                   group
@@ -169,7 +170,7 @@ export default function BrandCollectionSection({ blok }) {
                   </span>
 
                 </div>
-              </article>
+              </Link>
             ))}
 
           </div>

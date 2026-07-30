@@ -1,13 +1,12 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, Download, FileText, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Download, FileText, ChevronRight, ArrowUpRight } from 'lucide-react';
 import {
   storyblokEditable,
   renderRichText,
 } from "@storyblok/react/rsc";
 
-export default function InstructionPage({ blok }) {
-  // Handle image resolution (string or Storyblok asset object)
+export default function InstructionPage({ blok, products = [] }) {
   const imageUrl = typeof blok.image === 'string'
     ? blok.image
     : blok.image?.filename;
@@ -16,6 +15,28 @@ export default function InstructionPage({ blok }) {
   const pdfUrl = typeof blok.instructionPdf === 'string'
     ? blok.instructionPdf
     : blok.instructionPdf?.filename;
+
+  const relatedProducts = products
+    .filter((product) => {
+      if (product.content?.title === blok.title) return false;
+
+      const sameBrand =
+        blok.brand && product.content?.brand === blok.brand;
+
+      const sameType =
+        blok.type && product.content?.type === blok.type;
+
+      return sameBrand || sameType;
+    })
+    .sort((a, b) => {
+      const aBrand = a.content?.brand === blok.brand ? 1 : 0;
+      const bBrand = b.content?.brand === blok.brand ? 1 : 0;
+
+      if (aBrand !== bBrand) return bBrand - aBrand;
+
+      return 0;
+    })
+    .slice(0, 4);
 
   return (
     <main {...storyblokEditable(blok)} className="min-h-screen bg-background text-foreground py-12 px-4 sm:px-6 lg:px-8">
@@ -152,7 +173,90 @@ export default function InstructionPage({ blok }) {
 
           </div>
         </div>
+        {relatedProducts.length > 0 && (
+          <section className="pt-8">
+            <div className="mb-6 flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-foreground">
+                You may also like
+              </h2>
 
+              <Link
+                href="/discover"
+                className="
+                group
+                inline-flex
+                items-center
+                gap-2
+                font-mono
+                text-xs
+                uppercase
+                tracking-[0.15em]
+                text-muted-foreground
+                transition-colors
+                hover:text-red-500
+              "
+            >
+
+              View all
+
+              <ArrowUpRight
+                className="
+                  h-4
+                  w-4
+                  transition-transform
+                  group-hover:-translate-y-0.5
+                  group-hover:translate-x-0.5
+                "
+              />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+              {relatedProducts.map((product) => {
+                const relatedImage =
+                  typeof product.content?.image === "string"
+                    ? product.content.image
+                    : product.content?.image?.filename;
+
+                return (
+                  <Link
+                    key={product.uuid}
+                    href={`/discover/${product.slug}`}
+                    className="group overflow-hidden rounded-xl border border-white/10 bg-surface card-gloss transition-all duration-300 hover:border-red-500/40 hover:ring-glow"
+                  >
+                    <div className="relative aspect-square overflow-hidden bg-background/60">
+                      {relatedImage ? (
+                        <Image
+                          src={relatedImage}
+                          alt={product.content?.title || "Product image"}
+                          fill
+                          sizes="(max-width:768px) 50vw, 25vw"
+                          className="object-contain p-4 transition-transform duration-500 group-hover:scale-105"
+                        />
+                      ) : (
+                        <div className="flex h-full items-center justify-center text-xs text-muted-foreground">
+                          No image
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="p-4">
+                      <div className="line-clamp-2 font-semibold text-red-500">
+                        {product.content?.title}
+                      </div>
+
+                      {product.content?.type && (
+                        <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
+                          {product.content.type}
+                        </p>
+                      )}
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+        )}
       </div>
     </main>
   );
