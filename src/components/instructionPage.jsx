@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { resolveLink } from "@/lib/storyblok";
 import { ArrowLeft, Download, FileText, ChevronRight, ArrowUpRight, ShoppingBag } from 'lucide-react';
 import {
   storyblokEditable,
@@ -126,32 +127,16 @@ export default function InstructionPage({ blok, products = [] }) {
             <hr className="border-white/10 my-4" />
             {blok.buyLink && (
               <>
-              <a
-                href={blok.buyLink}
-                target="_blank"
-                className="
-                  w-full
-                  flex
-                  items-center
-                  justify-center
-                  gap-2
-                  rounded-xl
-                  bg-red-600
-                  hover:bg-red-500
-                  text-red-50
-                  font-bold
-                  py-4
-                  px-6
-                  transition-all
-                  duration-300
-                  shadow-[0_0_25px_rgba(220,38,38,0.4)]
-                  hover:shadow-[0_0_35px_rgba(220,38,38,0.6)]
-                "
-              >
-                <ShoppingBag className="w-5 h-5" />
-                Buy on The Entertainer
-              </a>
-              <hr className="border-white/10 my-4" />
+                <a
+                  href={resolveLink(blok.buyLink)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="..."
+                >
+                  <ShoppingBag className="w-5 h-5" />
+                  Buy on The Entertainer
+                </a>
+                <hr className="border-white/10 my-4" />
               </>
             )}
 
