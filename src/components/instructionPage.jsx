@@ -131,7 +131,22 @@ export default function InstructionPage({ blok, products = [] }) {
                   href={resolveLink(blok.buyLink)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="..."
+                  className="w-full
+                  flex
+                  items-center
+                  justify-center
+                  gap-2
+                  rounded-xl
+                  bg-red-600
+                  hover:bg-red-500
+                  text-red-50
+                  font-bold
+                  py-4
+                  px-6
+                  transition-all
+                  duration-300
+                  shadow-[0_0_25px_rgba(220,38,38,0.4)]
+                  hover:shadow-[0_0_35px_rgba(220,38,38,0.6)]"
                 >
                   <ShoppingBag className="w-5 h-5" />
                   Buy on The Entertainer
