@@ -34,7 +34,7 @@ export default function BrandCollectionSection({ blok }) {
       >
 
         {/* Image */}
-        <div className="relative min-h-[420px] border-line lg:border-r">
+        <div className={`relative min-h-[420px] border-line ${blok.FlipLayout ? "lg:border-l" : "lg:border-r"}`}>
 
           {blok.Image?.filename && (
             <Image
