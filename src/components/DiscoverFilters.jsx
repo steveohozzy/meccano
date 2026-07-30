@@ -19,18 +19,26 @@ export default function DiscoverFilters({ products }) {
   const productsPerPage = 40;
 
   const displayBrand = (brandName) => {
-  if (!brandName) return "";
+    if (!brandName) return "";
 
-  return brandName.trim().toLowerCase() === "meccano"
-    ? "heritage"
-    : brandName;
-};
+    const value = brandName.trim().toLowerCase();
+
+    if (value === "meccano") {
+      return "heritage";
+    }
+
+    if (value === "1397") {
+      return "builders";
+    }
+
+    return brandName;
+  };
 
   useEffect(() => {
     const urlBrand = searchParams.get("brand");
 
     if (urlBrand) {
-      setBrand(urlBrand);
+      setBrand(displayBrand(urlBrand));
     }
   }, [searchParams]);
 
