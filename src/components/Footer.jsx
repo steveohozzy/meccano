@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { headers } from "next/headers";
 
 import { getStoryblokApi, resolveLink } from "@/lib/storyblok";
 
@@ -30,6 +31,27 @@ export default async function Footer() {
     ) || {};
 
   const menuItems = header.Navigation || [];
+
+  const pathname =
+    (await headers()).get("x-pathname") || "/";
+
+  function getNavHref(item) {
+    const pageLink = resolveLink(item.Link);
+
+    if (item.HomepageAnchor) {
+      if (pathname === "/") {
+        return `#${item.HomepageAnchor}`;
+      }
+
+      if (pageLink && pageLink !== "/") {
+        return `${pageLink}#${item.HomepageAnchor}`;
+      }
+
+      return `/#${item.HomepageAnchor}`;
+    }
+
+    return pageLink || "/";
+  }
 
   const socials = [
     {
@@ -132,25 +154,17 @@ hover:ring-glow
   </p>
 
   <div className="mt-4 grid grid-cols-2 gap-x-8 gap-y-3">
-    {menuItems.map((item) => {
-      const href = item.Link
-        ? resolveLink(item.Link)
-        : item.HomepageAnchor
-          ? `/#${item.HomepageAnchor}`
-          : "/";
-
-      return (
-        <Link
-          key={item._uid}
-          href={href}
-          target={item.OpenInNewTab ? "_blank" : undefined}
-          className="group flex items-center gap-2 py-1 font-mono text-xs uppercase tracking-[0.15em] text-muted-foreground transition hover:text-red-400"
-        >
-          <span className="transition-transform group-hover:translate-x-1">→</span>
-          <span className="truncate">{item.Label}</span>
-        </Link>
-      );
-    })}
+    {menuItems.map((item) => (
+      <Link
+        key={item._uid}
+        href={getNavHref(item)}
+        target={item.OpenInNewTab ? "_blank" : undefined}
+        className="group flex items-center gap-2 py-1 font-mono text-xs uppercase tracking-[0.15em] text-muted-foreground transition hover:text-red-400"
+      >
+        <span className="transition-transform group-hover:translate-x-1">→</span>
+        <span className="truncate">{item.Label}</span>
+      </Link>
+    ))}
   </div>
 </div>
 
