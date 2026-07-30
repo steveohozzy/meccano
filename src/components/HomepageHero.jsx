@@ -42,7 +42,7 @@ export default function HomeHero({ blok }) {
 
           {/* Mobile Media */}
           <div className="relative mt-8 lg:hidden">
-            <div className="relative h-[320px] overflow-hidden rounded-[2.5rem] border border-red-500/40 p-3 bg-gradient-to-br from-red-600/20 via-white/10 to-red-600/20 shadow-[0_0_35px_rgba(80,180,255,0.18)]">
+            <div className="relative h-[270px] overflow-hidden rounded-[2.5rem] border border-red-500/40 p-3 bg-gradient-to-br from-red-600/20 via-white/10 to-red-600/20 shadow-[0_0_35px_rgba(80,180,255,0.18)]">
 
               <div className="relative h-full w-full overflow-hidden rounded-[2.3rem] border border-white/10 bg-black/20">
 
