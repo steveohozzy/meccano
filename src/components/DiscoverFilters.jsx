@@ -4,8 +4,10 @@ import { useMemo, useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight, ArrowLeft, ArrowRight, Download, SlidersHorizontal, X } from 'lucide-react';
+import { useSearchParams } from "next/navigation";
 
 export default function DiscoverFilters({ products }) {
+  const searchParams = useSearchParams();
   const [search, setSearch] = useState('');
   const [brand, setBrand] = useState('');
   const [type, setType] = useState('');
@@ -17,10 +19,20 @@ export default function DiscoverFilters({ products }) {
   const productsPerPage = 40;
 
   const displayBrand = (brandName) => {
-    const normalized = brandName?.trim().toLowerCase();
+  if (!brandName) return "";
 
-    return normalized === "meccano" ? "heritage" : brandName;
-  };
+  return brandName.trim().toLowerCase() === "meccano"
+    ? "heritage"
+    : brandName;
+};
+
+  useEffect(() => {
+    const urlBrand = searchParams.get("brand");
+
+    if (urlBrand) {
+      setBrand(urlBrand);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     setCurrentPage(1);
