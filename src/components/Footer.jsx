@@ -111,6 +111,7 @@ export default async function Footer() {
 
               {socials.map(
                 (social) => (
+                  <>
                   <Link
                     key={
                       social.name
@@ -140,6 +141,8 @@ hover:ring-glow
                       social.icon
                     }
                   </Link>
+                  <span className="sr-only">{social.name}</span>
+                  </>
                 )
               )}
 
@@ -184,9 +187,9 @@ hover:ring-glow
           >
 
             {footer.ctaTitle && (
-              <h3 className="font-heading text-3xl font-bold">
+              <div className="font-heading text-3xl font-bold">
                 {footer.ctaTitle}
-              </h3>
+              </div>
             )}
 
             {footer.ctaText && (
