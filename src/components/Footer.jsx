@@ -111,7 +111,6 @@ export default async function Footer() {
 
               {socials.map(
                 (social) => (
-                  <>
                   <Link
                     key={
                       social.name
@@ -140,9 +139,8 @@ hover:ring-glow
                     {
                       social.icon
                     }
+                    <span className="sr-only">{social.name}</span>
                   </Link>
-                  <span className="sr-only">{social.name}</span>
-                  </>
                 )
               )}
 
