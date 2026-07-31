@@ -7,6 +7,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowUp, ArrowUpRight } from "lucide-react";
 
+import { decodeText } from "@/lib/text";
+
 export default function BlogFilters({ posts }) {
   const searchParams = useSearchParams();
   const filterRef = useRef(null);
@@ -115,7 +117,7 @@ export default function BlogFilters({ posts }) {
               ">
                 <Image
                   src={post.content.featuredImage?.filename || "/images/placeholder.jpg"}
-                  alt={post.content.title || "Blog image"}
+                  alt={decodeText(post.content.title || "Blog image")}
                   fill
                   sizes="(max-width:768px) 100vw, 33vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -147,7 +149,7 @@ export default function BlogFilters({ posts }) {
               <div className="flex flex-1 items-end justify-between p-5">
                 <div>
                   <div className="line-clamp-2 font-bold text-red-500 md:text-lg">
-                    {post.content.title}
+                    {decodeText(post.content.title)}
                   </div>
 
                   {(post.content.readTime || post.content.readLength) && (

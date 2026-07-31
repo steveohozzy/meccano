@@ -7,6 +7,8 @@ import {
   renderRichText,
 } from "@storyblok/react/rsc";
 
+import { decodeText } from "@/lib/text";
+
 export default function InstructionPage({ blok, products = [] }) {
   const imageUrl = typeof blok.image === 'string'
     ? blok.image
@@ -70,7 +72,7 @@ export default function InstructionPage({ blok, products = [] }) {
                 fill
                 priority
                 sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-contain p-6 transition-transform duration-700 hover:scale-105"
+                className="object-contain transition-transform duration-700 hover:scale-105"
               />
             ) : (
               <div className="flex h-full items-center justify-center text-muted-foreground font-mono">
@@ -258,7 +260,7 @@ export default function InstructionPage({ blok, products = [] }) {
                       {relatedImage ? (
                         <Image
                           src={relatedImage}
-                          alt={product.content?.title || "Product image"}
+                          alt={decodeText(product.content?.title || "Product image")}
                           fill
                           sizes="(max-width:768px) 50vw, 25vw"
                           className="object-contain p-4 transition-transform duration-500 group-hover:scale-105"
@@ -272,11 +274,11 @@ export default function InstructionPage({ blok, products = [] }) {
 
                     <div className="p-4">
                       <div className="line-clamp-2 font-semibold text-red-500">
-                        {product.content?.title}
+                        {decodeText(product.content?.title)}
                       </div>
 
                       {product.content?.type && (
-                        <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
+                        <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.12em] text-electric">
                           {product.content.type}
                         </p>
                       )}

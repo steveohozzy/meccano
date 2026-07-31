@@ -7,6 +7,8 @@ import { resolveLink } from "@/lib/storyblok";
 import Link from "next/link";
 import { Bolt } from "lucide-react";
 
+import { decodeText } from "@/lib/text";
+
 export default function BrandCollectionSection({ blok }) {
   return (
     <section
@@ -142,7 +144,7 @@ export default function BrandCollectionSection({ blok }) {
 
                   <div>
                     <div className="md:text-lg font-bold text-red-500">
-                      {set.Name}
+                      {decodeText(set.Name)}
                     </div>
 
                     <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground">

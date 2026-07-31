@@ -4,10 +4,14 @@ import { useMemo, useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight, ArrowLeft, ArrowRight, Download, SlidersHorizontal, X } from 'lucide-react';
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
+
+import { decodeText } from "@/lib/text";
 
 export default function DiscoverFilters({ products }) {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
   const [search, setSearch] = useState('');
   const [brand, setBrand] = useState('');
   const [type, setType] = useState('');
@@ -34,16 +38,59 @@ export default function DiscoverFilters({ products }) {
     return brandName;
   };
 
+  const displayType = (typeName) => {
+    if (!typeName) return "";
+
+    const value = typeName.toString().trim();
+
+    // Multiple types (comma, semicolon, or pipe separated)
+    if (/[;,|]/.test(value)) {
+      return "multiple";
+    }
+
+    const lower = value.toLowerCase();
+
+    if (lower === "1430") return "structure";
+    if (lower === "1416") return "motorcycle";
+    if (lower === "1422") return "collaborative";
+    if (lower === "1429") return "space";
+    if (lower === "53") return "free build";
+
+    return lower;
+  };
+
+  const updateUrl = (newFilters) => {
+    const params = new URLSearchParams();
+
+    if (newFilters.search) params.set("search", newFilters.search);
+    if (newFilters.brand) params.set("brand", newFilters.brand);
+    if (newFilters.type) params.set("type", newFilters.type);
+    if (newFilters.age) params.set("age", newFilters.age);
+
+    const query = params.toString();
+
+    router.replace(query ? `${pathname}?${query}` : pathname, {
+      scroll: false,
+    });
+  };
+
   useEffect(() => {
     const urlBrand = searchParams.get("brand");
+    const urlType = searchParams.get("type");
 
-    if (urlBrand) {
-      setBrand(displayBrand(urlBrand));
-    }
+    if (urlBrand) setBrand(displayBrand(urlBrand));
+    if (urlType) setType(displayType(urlType));
   }, [searchParams]);
 
   useEffect(() => {
     setCurrentPage(1);
+
+    setTimeout(() => {
+      productsRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 50);
   }, [search, brand, type, age]);
 
   const changePage = (page) => {
@@ -68,7 +115,13 @@ export default function DiscoverFilters({ products }) {
   }, [products]);
 
   const types = useMemo(() => {
-    return [...new Set(products.map((p) => p.content.type).filter(Boolean))].sort();
+    return [
+      ...new Set(
+        products
+          .map((p) => displayType(p.content.type))
+          .filter(Boolean)
+      ),
+    ].sort();
   }, [products]);
 
   const ages = useMemo(() => {
@@ -98,7 +151,7 @@ export default function DiscoverFilters({ products }) {
           !brand || displayBrand(c.brand) === brand;
 
         const matchesType =
-          !type || c.type === type;
+          !type || displayType(c.type) === type;
 
         const matchesAge =
           !age || c.age === age;
@@ -139,7 +192,11 @@ export default function DiscoverFilters({ products }) {
                 type="text"
                 placeholder="Search instructions..."
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setSearch(value);
+                  updateUrl({ search: value, brand, type, age });
+                }}
                 className="
                   w-full
                   rounded-full
@@ -230,7 +287,11 @@ export default function DiscoverFilters({ products }) {
             <div className='relative'>
               <select
                 value={brand}
-                onChange={(e) => setBrand(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setBrand(value);
+                  updateUrl({ search, brand: value, type, age });
+                }}
                 className='appearance-none rounded-full border border-white/10 bg-background/60 px-5 py-3 pr-10 text-sm text-white outline-none transition-all duration-300 focus:border-red-500/40 focus:ring-2 focus:ring-red-500/20'
               >
                 <option value=''>All brands</option>
@@ -253,7 +314,11 @@ export default function DiscoverFilters({ products }) {
             <div className='relative'>
               <select
                 value={type}
-                onChange={(e) => setType(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setType(value);
+                  updateUrl({ search, brand, type: value, age });
+                }}
                 className='appearance-none rounded-full border border-white/10 bg-background/60 px-5 py-3 pr-10 text-sm text-white outline-none transition-all duration-300 focus:border-red-500/40 focus:ring-2 focus:ring-red-500/20'
               >
                 <option value=''>All types</option>
@@ -276,7 +341,11 @@ export default function DiscoverFilters({ products }) {
             <div className='relative'>
               <select
                 value={age}
-                onChange={(e) => setAge(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setAge(value);
+                  updateUrl({ search, brand, type, age: value });
+                }}
                 className='appearance-none rounded-full border border-white/10 bg-background/60 px-5 py-3 pr-10 text-sm text-white outline-none transition-all duration-300 focus:border-red-500/40 focus:ring-2 focus:ring-red-500/20'
               >
                 <option value=''>All ages</option>
@@ -299,10 +368,11 @@ export default function DiscoverFilters({ products }) {
             {(search || brand || type || age) && (
               <button
                 onClick={() => {
-                  setSearch('');
-                  setBrand('');
-                  setType('');
-                  setAge('');
+                  setSearch("");
+                  setBrand("");
+                  setType("");
+                  setAge("");
+                  updateUrl({ search: "", brand: "", type: "", age: "" });
                 }}
                 className='rounded-full border border-red-500/30 bg-red-500/10 px-5 py-3 text-sm font-medium text-red-400 transition-all duration-300 hover:bg-red-500/20'
               >
@@ -586,7 +656,7 @@ export default function DiscoverFilters({ products }) {
                 {imageUrl ? (
                   <Image
                     src={imageUrl}
-                    alt={product.content.title || 'Product image'}
+                    alt={decodeText(product.content.title || 'Product image')}
                     fill
                     sizes='(max-width:768px) 50vw, 25vw'
                     className='object-contain transition-transform duration-500 group-hover:scale-105'
@@ -602,19 +672,47 @@ export default function DiscoverFilters({ products }) {
                     {product.content.age}
                   </span>
                 )}
+
+                {!productHasDescription && (
+                  <span className="
+                    absolute
+                    top-3
+                    right-3
+                    rounded-md
+                    border
+                    border-yellow-500/40
+                    bg-background/80
+                    px-2
+                    py-1
+                    font-mono
+                    text-[10px]
+                    uppercase
+                    tracking-[0.15em]
+                    text-yellow-400
+                    backdrop-blur
+                  ">
+                    Archived
+                  </span>
+                )}
               </div>
 
               <div className='flex flex-1 items-end justify-between p-5'>
                 <div>
                   <div className='line-clamp-2 font-bold text-red-500 md:text-lg'>
-                    {product.content.title}
+                    {decodeText(product.content.title)}
                   </div>
 
-                  {product.content.type && (
-                    <p className='mt-2 font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground'>
-                      <span className='text-electric'>
-                        {product.content.type}
-                      </span>
+                  {productHasDescription ? (
+                    product.content.type && (
+                      <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.12em] text-muted-foreground">
+                        <span className="text-electric">
+                          {displayType(product.content.type)}
+                        </span>
+                      </p>
+                    )
+                  ) : (
+                    <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.12em] text-yellow-400">
+                      PDF instructions
                     </p>
                   )}
                 </div>
@@ -644,7 +742,7 @@ export default function DiscoverFilters({ products }) {
               href={pdfUrl}
               target='_blank'
               rel='noopener noreferrer'
-              className='group relative flex flex-col overflow-hidden rounded-xl border border-white/10 bg-surface card-gloss transition-all duration-300 hover:border-red-500/40 hover:ring-glow'
+              className='group relative flex flex-col overflow-hidden rounded-xl border border-white/10 bg-surface card-gloss transition-all duration-300 hover:border-red-500/40 hover:ring-glow opacity-75 hover:opacity-100'
             >
               {TileContent}
             </a>
