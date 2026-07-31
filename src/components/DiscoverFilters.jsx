@@ -77,9 +77,11 @@ export default function DiscoverFilters({ products }) {
   useEffect(() => {
     const urlBrand = searchParams.get("brand");
     const urlType = searchParams.get("type");
+    const urlAge = searchParams.get("age");
 
     if (urlBrand) setBrand(displayBrand(urlBrand));
     if (urlType) setType(displayType(urlType));
+    if (urlAge) setAge(urlAge);
   }, [searchParams]);
 
   useEffect(() => {
@@ -104,29 +106,63 @@ export default function DiscoverFilters({ products }) {
     }, 50);
   };
 
+  const availableProducts = useMemo(() => {
+  return products.filter((product) => {
+    const c = product.content;
+
+    const matchesSearch =
+      !search ||
+      c.title?.toLowerCase().includes(search.toLowerCase());
+
+    const matchesBrand =
+      !brand || displayBrand(c.brand) === brand;
+
+    const matchesType =
+      !type || displayType(c.type) === type;
+
+    const matchesAge =
+      !age || c.age === age;
+
+    return (
+      matchesSearch &&
+      matchesBrand &&
+      matchesType &&
+      matchesAge
+    );
+  });
+}, [products, search, brand, type, age]);
+
   const brands = useMemo(() => {
-    return [
-      ...new Set(
-        products
-          .map((p) => displayBrand(p.content.brand))
-          .filter(Boolean)
-      ),
-    ].sort();
-  }, [products]);
+  return [
+    ...new Set(
+      availableProducts
+        .map((p) => displayBrand(p.content.brand))
+        .filter(Boolean)
+    ),
+  ].sort();
+}, [availableProducts]);
 
-  const types = useMemo(() => {
-    return [
-      ...new Set(
-        products
-          .map((p) => displayType(p.content.type))
-          .filter(Boolean)
-      ),
-    ].sort();
-  }, [products]);
 
-  const ages = useMemo(() => {
-    return [...new Set(products.map((p) => p.content.age).filter(Boolean))].sort();
-  }, [products]);
+const types = useMemo(() => {
+  return [
+    ...new Set(
+      availableProducts
+        .map((p) => displayType(p.content.type))
+        .filter(Boolean)
+    ),
+  ].sort();
+}, [availableProducts]);
+
+
+const ages = useMemo(() => {
+  return [
+    ...new Set(
+      availableProducts
+        .map((p) => p.content.age)
+        .filter(Boolean)
+    ),
+  ].sort();
+}, [availableProducts]);
 
   const filtered = useMemo(() => {
     const hasDescription = (product) => {
@@ -374,7 +410,7 @@ export default function DiscoverFilters({ products }) {
                   setAge("");
                   updateUrl({ search: "", brand: "", type: "", age: "" });
                 }}
-                className='rounded-full border border-red-500/30 bg-red-500/10 px-5 py-3 text-sm font-medium text-red-400 transition-all duration-300 hover:bg-red-500/20'
+                className='rounded-full border border-red-500/30 bg-red-500/10 px-5 py-3 text-sm font-medium text-red-400 transition-all duration-300 hover:bg-red-500/20 cursor-pointer'
               >
                 Clear filters
               </button>
@@ -390,10 +426,86 @@ export default function DiscoverFilters({ products }) {
           </div>
 
           {(search || brand || type || age) && (
-            <div className='rounded-full border border-red-500/20 bg-red-500/10 px-3 py-1 text-xs font-medium text-red-400'>
-              Filters applied
-            </div>
-          )}
+  <div className="flex items-center gap-2 flex-wrap">
+
+    <div className='rounded-full border border-red-500/20 bg-red-500/10 px-3 py-1 text-xs font-medium text-red-400'>
+      Filters applied
+    </div>
+
+    {search && (
+      <button
+        onClick={() => {
+          setSearch("");
+          updateUrl({
+            search: "",
+            brand,
+            type,
+            age
+          });
+        }}
+        className="flex items-center gap-1 rounded-full border border-white/10 bg-background/60 px-3 py-1 text-xs text-white cursor-pointer"
+      >
+        Search: {search}
+        <X className="h-3 w-3" />
+      </button>
+    )}
+
+    {brand && (
+      <button
+        onClick={() => {
+          setBrand("");
+          updateUrl({
+            search,
+            brand: "",
+            type,
+            age
+          });
+        }}
+        className="flex items-center gap-1 rounded-full border border-white/10 bg-background/60 px-3 py-1 text-xs text-white cursor-pointer"
+      >
+        Brand: {brand}
+        <X className="h-3 w-3" />
+      </button>
+    )}
+
+    {type && (
+      <button
+        onClick={() => {
+          setType("");
+          updateUrl({
+            search,
+            brand,
+            type: "",
+            age
+          });
+        }}
+        className="flex items-center gap-1 rounded-full border border-white/10 bg-background/60 px-3 py-1 text-xs text-white cursor-pointer"
+      >
+        Type: {type}
+        <X className="h-3 w-3" />
+      </button>
+    )}
+
+    {age && (
+      <button
+        onClick={() => {
+          setAge("");
+          updateUrl({
+            search,
+            brand,
+            type,
+            age: ""
+          });
+        }}
+        className="flex items-center gap-1 rounded-full border border-white/10 bg-background/60 px-3 py-1 text-xs text-white cursor-pointer"
+      >
+        Age: {age}
+        <X className="h-3 w-3" />
+      </button>
+    )}
+
+  </div>
+)}
         </div>
       </div>
 
