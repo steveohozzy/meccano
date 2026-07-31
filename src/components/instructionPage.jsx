@@ -163,7 +163,7 @@ export default function InstructionPage({ blok, products = [] }) {
                 </div>
                 <div>
                   <h3 className="font-bold text-foreground">Official Build Instructions</h3>
-                  <p className="text-xs text-muted-foreground">PDF document format for mobile & desktop</p>
+                  <p className="text-xs text-muted-foreground">PDF document format to view, save and print</p>
                 </div>
               </div>
 
