@@ -101,9 +101,9 @@ export default async function Blog({ blok }) {
           className="
             mt-10
             grid
-            grid-cols-2
+            grid-cols-1
             gap-5
-            lg:grid-cols-4
+            lg:grid-cols-3
           "
         >
           {posts.map((post) => {
