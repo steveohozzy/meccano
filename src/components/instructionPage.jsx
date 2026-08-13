@@ -75,9 +75,14 @@ export default function InstructionPage({ blok, products = [] }) {
                 className="object-contain transition-transform duration-700 hover:scale-105"
               />
             ) : (
-              <div className="flex h-full items-center justify-center text-muted-foreground font-mono">
-                No Preview Image Available
-              </div>
+              <Image
+                src={blok.imageUrl}
+                alt={blok.title || "Product instruction preview"}
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-contain transition-transform duration-700 hover:scale-105"
+              />
             )}
 
             {/* Floating Age Tag */}
@@ -157,19 +162,54 @@ export default function InstructionPage({ blok, products = [] }) {
               </>
             )}
 
-            {/* PDF Action Box */}
-            <div className="rounded-xl border border-white/10 bg-surface p-6 card-gloss space-y-4">
-              <div className="flex items-center space-x-3">
-                <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-500">
-                  <FileText className="w-6 h-6" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-foreground">Official Build Instructions</h3>
-                  <p className="text-xs text-muted-foreground">PDF document format to view, save and print</p>
-                </div>
-              </div>
+            {blok.productUrl && (
+              <>
+                <a
+                  href={blok.productUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full
+                  flex
+                  items-center
+                  justify-center
+                  gap-2
+                  rounded-xl
+                  bg-red-600
+                  hover:bg-red-500
+                  text-red-50
+                  font-bold
+                  py-4
+                  px-6
+                  transition-all
+                  duration-300
+                  shadow-[0_0_25px_rgba(220,38,38,0.4)]
+                  hover:shadow-[0_0_35px_rgba(220,38,38,0.6)]"
+                >
+                  <ShoppingBag className="w-5 h-5" />
+                  Buy on The Entertainer
+                </a>
+              </>
+            )}
 
-              {pdfUrl ? (
+            {pdfUrl &&
+              <>
+              <hr className="border-white/10 my-4" />
+              <div className="rounded-xl border border-white/10 bg-surface p-6 card-gloss space-y-4">
+                <div className="flex items-center space-x-3">
+                  <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/30 text-red-500">
+                    <FileText className="w-6 h-6" />
+                  </div>
+
+                  <div>
+                    <h3 className="font-bold text-foreground">
+                      Official Build Instructions
+                    </h3>
+                    <p className="text-xs text-muted-foreground">
+                      PDF document format to view, save and print
+                    </p>
+                  </div>
+                </div>
+
                 <a
                   href={pdfUrl}
                   target="_blank"
@@ -196,12 +236,9 @@ export default function InstructionPage({ blok, products = [] }) {
                   <Download className="w-5 h-5" />
                   Download Build Instructions
                 </a>
-              ) : (
-                <div className="w-full text-center py-3 rounded-xl bg-white/5 text-muted-foreground font-mono text-sm border border-white/5">
-                  Instructions coming soon
-                </div>
-              )}
-            </div>
+              </div>
+              </>
+            }
 
           </div>
         </div>

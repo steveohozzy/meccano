@@ -12,60 +12,92 @@ export default function DiscoverFilters({ products }) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();
-  const [search, setSearch] = useState('');
-  const [brand, setBrand] = useState('');
-  const [type, setType] = useState('');
-  const [age, setAge] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [filtersOpen, setFiltersOpen] = useState(false);
-  const productsRef = useRef(null);
+
+  const displayBrand = (brandName) => {
+  if (!brandName) return "";
+
+  const value = brandName.trim().toLowerCase();
+
+  if (value === "meccano") {
+    return "heritage";
+  }
+
+  if (value === "1397") {
+    return "builders";
+  }
+
+  return brandName;
+};
+
+const displayType = (typeName) => {
+  if (!typeName) return "";
+
+  const value = typeName.toString().trim();
+
+  // Multiple types
+  if (/[;,|]/.test(value)) {
+    return "multiple";
+  }
+
+  const lower = value.toLowerCase();
+
+  if (lower === "1430") return "structure";
+  if (lower === "1416") return "motorcycle";
+  if (lower === "1422") return "collaborative";
+  if (lower === "1429") return "space";
+  if (lower === "53") return "free build";
+
+  return lower;
+};
+
+const [search, setSearch] = useState(
+  () => searchParams.get("search") || ""
+);
+
+const [brand, setBrand] = useState(() => {
+  const value = searchParams.get("brand");
+  return value ? displayBrand(value) : "";
+});
+
+const [type, setType] = useState(() => {
+  const value = searchParams.get("type");
+  return value ? displayType(value) : "";
+});
+
+const [age, setAge] = useState(
+  () => searchParams.get("age") || ""
+);
+
+const [currentPage, setCurrentPage] = useState(() => {
+  const page = Number(searchParams.get("page"));
+  return page > 0 ? page : 1;
+});
+const [filtersOpen, setFiltersOpen] = useState(false);
+const productsRef = useRef(null);
 
   const productsPerPage = 40;
 
-  const displayBrand = (brandName) => {
-    if (!brandName) return "";
+  const applyFilters = (newFilters) => {
+  setSearch(newFilters.search);
+  setBrand(newFilters.brand);
+  setType(newFilters.type);
+  setAge(newFilters.age);
+  setCurrentPage(1);
 
-    const value = brandName.trim().toLowerCase();
+  updateUrl(newFilters);
+};
 
-    if (value === "meccano") {
-      return "heritage";
-    }
-
-    if (value === "1397") {
-      return "builders";
-    }
-
-    return brandName;
-  };
-
-  const displayType = (typeName) => {
-    if (!typeName) return "";
-
-    const value = typeName.toString().trim();
-
-    // Multiple types (comma, semicolon, or pipe separated)
-    if (/[;,|]/.test(value)) {
-      return "multiple";
-    }
-
-    const lower = value.toLowerCase();
-
-    if (lower === "1430") return "structure";
-    if (lower === "1416") return "motorcycle";
-    if (lower === "1422") return "collaborative";
-    if (lower === "1429") return "space";
-    if (lower === "53") return "free build";
-
-    return lower;
-  };
-
-  const updateUrl = (newFilters) => {
+  const updateUrl = (newFilters, page = currentPage) => {
     const params = new URLSearchParams();
 
     if (newFilters.search) params.set("search", newFilters.search);
     if (newFilters.brand) params.set("brand", newFilters.brand);
     if (newFilters.type) params.set("type", newFilters.type);
     if (newFilters.age) params.set("age", newFilters.age);
+
+    if (page > 1) {
+      params.set("page", page.toString());
+    }
 
     const query = params.toString();
 
@@ -75,28 +107,28 @@ export default function DiscoverFilters({ products }) {
   };
 
   useEffect(() => {
-    const urlBrand = searchParams.get("brand");
-    const urlType = searchParams.get("type");
-    const urlAge = searchParams.get("age");
-
-    if (urlBrand) setBrand(displayBrand(urlBrand));
-    if (urlType) setType(displayType(urlType));
-    if (urlAge) setAge(urlAge);
-  }, [searchParams]);
-
-  useEffect(() => {
-    setCurrentPage(1);
-
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       productsRef.current?.scrollIntoView({
         behavior: "smooth",
         block: "start",
       });
     }, 50);
+
+    return () => clearTimeout(timer);
   }, [search, brand, type, age]);
 
   const changePage = (page) => {
     setCurrentPage(page);
+
+    updateUrl(
+      {
+        search,
+        brand,
+        type,
+        age,
+      },
+      page
+    );
 
     setTimeout(() => {
       productsRef.current?.scrollIntoView({
@@ -209,6 +241,33 @@ const ages = useMemo(() => {
     currentPage * productsPerPage
   );
 
+  const pages = [];
+
+if (totalPages <= 4) {
+  for (let i = 1; i <= totalPages; i++) {
+    pages.push(i);
+  }
+} else if (currentPage <= 2) {
+  pages.push(1, 2, 3, "...", totalPages);
+} else if (currentPage >= totalPages - 1) {
+  pages.push(
+    1,
+    "...",
+    totalPages - 2,
+    totalPages - 1,
+    totalPages
+  );
+} else {
+  pages.push(
+    1,
+    "...",
+    currentPage,
+    currentPage + 1,
+    "...",
+    totalPages
+  );
+}
+
   return (
     <>
       <div className="md:hidden sticky top-20 z-30">
@@ -230,8 +289,13 @@ const ages = useMemo(() => {
                 value={search}
                 onChange={(e) => {
                   const value = e.target.value;
-                  setSearch(value);
-                  updateUrl({ search: value, brand, type, age });
+
+                  applyFilters({
+                    search: value,
+                    brand,
+                    type,
+                    age,
+                  });
                 }}
                 className="
                   w-full
@@ -325,8 +389,13 @@ const ages = useMemo(() => {
                 value={brand}
                 onChange={(e) => {
                   const value = e.target.value;
-                  setBrand(value);
-                  updateUrl({ search, brand: value, type, age });
+
+                  applyFilters({
+                    search,
+                    brand: value,
+                    type,
+                    age,
+                  });
                 }}
                 className='appearance-none rounded-full border border-white/10 bg-background/60 px-5 py-3 pr-10 text-sm text-white outline-none transition-all duration-300 focus:border-red-500/40 focus:ring-2 focus:ring-red-500/20'
               >
@@ -352,8 +421,13 @@ const ages = useMemo(() => {
                 value={type}
                 onChange={(e) => {
                   const value = e.target.value;
-                  setType(value);
-                  updateUrl({ search, brand, type: value, age });
+
+                  applyFilters({
+                    search,
+                    brand,
+                    type: value,
+                    age,
+                  });
                 }}
                 className='appearance-none rounded-full border border-white/10 bg-background/60 px-5 py-3 pr-10 text-sm text-white outline-none transition-all duration-300 focus:border-red-500/40 focus:ring-2 focus:ring-red-500/20'
               >
@@ -379,8 +453,13 @@ const ages = useMemo(() => {
                 value={age}
                 onChange={(e) => {
                   const value = e.target.value;
-                  setAge(value);
-                  updateUrl({ search, brand, type, age: value });
+
+                  applyFilters({
+                    search,
+                    brand,
+                    type,
+                    age: value,
+                  });
                 }}
                 className='appearance-none rounded-full border border-white/10 bg-background/60 px-5 py-3 pr-10 text-sm text-white outline-none transition-all duration-300 focus:border-red-500/40 focus:ring-2 focus:ring-red-500/20'
               >
@@ -770,13 +849,20 @@ const ages = useMemo(() => {
                     src={imageUrl}
                     alt={decodeText(product.content.title || 'Product image')}
                     fill
-                    sizes='(max-width:768px) 50vw, 25vw'
-                    className='object-contain transition-transform duration-500 group-hover:scale-105'
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-contain transition-transform duration-700 hover:scale-105"
                   />
                 ) : (
-                  <div className='flex h-full items-center justify-center text-sm text-muted-foreground'>
-                    No image
-                  </div>
+                  <Image
+                    src={product.content.imageUrl}
+                    alt={decodeText(product.content.title || 'Product image')}
+                    fill
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-contain transition-transform duration-700 hover:scale-105"
+                                />
+                  
                 )}
 
                 {product.content.age && (
@@ -872,51 +958,28 @@ const ages = useMemo(() => {
       <ArrowLeft className="h-4 w-4" />
     </button>
 
-    {(() => {
-  const pages = [];
-
-  if (totalPages <= 4) {
-    for (let i = 1; i <= totalPages; i++) {
-      pages.push(i);
-    }
-  } else if (currentPage <= 2) {
-    pages.push(1, 2, 3, '...', totalPages);
-  } else if (currentPage >= totalPages - 1) {
-    pages.push(1, '...', totalPages - 2, totalPages - 1, totalPages);
-  } else {
-    pages.push(
-      1,
-      '...',
-      currentPage,
-      currentPage + 1,
-      '...',
-      totalPages
-    );
-  }
-
-  return pages.map((page, index) =>
-    page === '...' ? (
-      <span
-        key={`ellipsis-${index}`}
-        className="px-1 text-sm text-muted-foreground"
-      >
-        ...
-      </span>
-    ) : (
-      <button
-        key={page}
-        onClick={() => changePage(page)}
-        className={`rounded-full px-4 py-2 text-sm transition cursor-pointer ${
-          currentPage === page
-            ? 'bg-red-600 text-white'
-            : 'border border-white/10 bg-surface text-white hover:border-red-500/40'
-        }`}
-      >
-        {page}
-      </button>
-    )
-  );
-})()}
+    {pages.map((page, index) =>
+  page === "..." ? (
+    <span
+      key={`ellipsis-${index}`}
+      className="px-1 text-sm text-muted-foreground"
+    >
+      ...
+    </span>
+  ) : (
+    <button
+      key={page}
+      onClick={() => changePage(page)}
+      className={`rounded-full px-4 py-2 text-sm transition cursor-pointer ${
+        currentPage === page
+          ? "bg-red-600 text-white"
+          : "border border-white/10 bg-surface text-white hover:border-red-500/40"
+      }`}
+    >
+      {page}
+    </button>
+  )
+)}
 
     <button
       disabled={currentPage === totalPages}

@@ -17,6 +17,11 @@ const nextConfig = {
       },
       {
         protocol: "https",
+        hostname: "www.thetoyshop.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
         hostname: "a.storyblok.com",
         pathname: "/**",
       },
