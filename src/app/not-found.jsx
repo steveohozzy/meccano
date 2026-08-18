@@ -532,7 +532,7 @@ export default function NotFound() {
             WORKBENCH
         ===================================================== */}
 
-        <div className="relative mx-auto mt-8 h-[250px] w-full max-w-[600px] sm:mt-10 sm:h-[290px]">
+        <div className="relative mx-auto mt-5 h-[250px] w-full max-w-[600px] sm:mt-7 sm:h-[290px]">
 
           <div className="absolute bottom-5 left-1/2 h-8 w-[75%] -translate-x-1/2 rounded-full bg-red-500/10 blur-2xl" />
 
