@@ -2,74 +2,112 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#efe8df] px-6">
-      
-      <div className="max-w-xl text-center">
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#f3eee7] px-6 py-20">
+      {/* Background construction details */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -left-24 -top-24 size-72 rounded-full bg-[#d71920]/10 blur-3xl" />
+        <div className="absolute -bottom-32 -right-24 size-96 rounded-full bg-[#1f1f1f]/10 blur-3xl" />
 
-        {/* Big playful number */}
-        <h1 className="font-heading text-7xl md:text-8xl text-primary">
+        {/* Decorative bolts */}
+        <div className="absolute left-[8%] top-[18%] size-5 rounded-full border-4 border-[#1f1f1f]/10" />
+        <div className="absolute right-[12%] top-[28%] size-7 rounded-full border-4 border-[#d71920]/15" />
+        <div className="absolute bottom-[18%] left-[15%] size-6 rounded-full border-4 border-[#d71920]/10" />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-2xl text-center">
+        {/* Meccano-style badge */}
+        <div className="mx-auto mb-8 inline-flex items-center gap-3 rounded-full border border-[#1f1f1f]/10 bg-white/70 px-5 py-2 shadow-sm backdrop-blur">
+          <span className="size-3 rounded-full bg-[#d71920]" />
+          <span className="text-sm font-bold uppercase tracking-[0.2em] text-[#1f1f1f]">
+            Meccano
+          </span>
+        </div>
+
+        {/* Big 404 */}
+        <h1 className="font-heading text-8xl font-black leading-none tracking-tight text-[#d71920] sm:text-9xl">
           404
         </h1>
 
-        {/* Fun message */}
-        <h2 className="mt-6 text-2xl md:text-3xl font-heading text-gray-800">
-          Oops… this page went on an adventure 🧸
+        {/* Heading */}
+        <h2 className="mt-6 font-heading text-3xl font-bold tracking-tight text-[#1f1f1f] sm:text-4xl">
+          Looks like this build is missing a few parts.
         </h2>
 
-        <p className="mt-4 text-gray-600 leading-relaxed">
-          We couldn’t find what you were looking for. It might have been moved,
-          hidden in a toy box, or never existed in the first place.
+        <p className="mx-auto mt-5 max-w-lg text-base leading-7 text-[#5f5a55] sm:text-lg">
+          We couldn’t find the page you’re looking for. It may have been
+          moved, taken apart, or simply never made it onto the workbench.
         </p>
 
-        {/* Cute illustration style circle blobs */}
-        <div className="relative my-10 flex justify-center">
-          <div className="absolute size-32 rounded-full bg-primary/10 blur-2xl" />
-          <div className="absolute -right-6 size-24 rounded-full bg-secondary/20 blur-2xl" />
-          <div className="relative size-24 rounded-full bg-accent/30" />
+        {/* Meccano-inspired construction graphic */}
+        <div className="relative mx-auto my-12 h-36 w-64">
+          {/* Horizontal metal beam */}
+          <div className="absolute left-1/2 top-1/2 h-5 w-56 -translate-x-1/2 -translate-y-1/2 rotate-6 rounded-sm bg-[#1f1f1f] shadow-md">
+            <div className="absolute inset-x-4 top-1/2 flex -translate-y-1/2 justify-between">
+              {Array.from({ length: 7 }).map((_, index) => (
+                <span
+                  key={index}
+                  className="size-2.5 rounded-full bg-[#f3eee7]"
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Red connecting beam */}
+          <div className="absolute left-1/2 top-1/2 h-5 w-40 -translate-x-1/2 -translate-y-1/2 -rotate-45 rounded-sm bg-[#d71920] shadow-md" />
+
+          {/* Centre bolt */}
+          <div className="absolute left-1/2 top-1/2 size-9 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-[#1f1f1f] bg-[#f3eee7] shadow-md" />
+
+          {/* Corner bolts */}
+          <div className="absolute left-7 top-5 size-7 rounded-full border-4 border-[#1f1f1f] bg-[#f3eee7]" />
+          <div className="absolute bottom-5 right-7 size-7 rounded-full border-4 border-[#d71920] bg-[#f3eee7]" />
         </div>
 
-        {/* Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-
+        {/* CTAs */}
+        <div className="flex flex-col justify-center gap-4 sm:flex-row">
           <Link
             href="/"
             className="
+              inline-flex items-center justify-center
               rounded-full
-              bg-primary
-              px-6 py-3
-              font-semibold
+              bg-[#d71920]
+              px-7 py-3.5
+              font-bold
               text-white
-              transition-transform
+              shadow-lg shadow-[#d71920]/20
+              transition-all
               hover:-translate-y-1
+              hover:bg-[#b9141a]
+              hover:shadow-xl
             "
           >
-            🏠 Back to home
+            Back to the workshop
           </Link>
 
           <Link
-            href="/blog"
+            href="/discover"
             className="
+              inline-flex items-center justify-center
               rounded-full
-              border border-primary
-              px-6 py-3
-              font-semibold
-              text-primary
-              transition-transform
+              border-2 border-[#1f1f1f]
+              bg-transparent
+              px-7 py-3.5
+              font-bold
+              text-[#1f1f1f]
+              transition-all
               hover:-translate-y-1
+              hover:bg-[#1f1f1f]
+              hover:text-white
             "
           >
-            📚 Explore blog
+            Explore Meccano
           </Link>
-
         </div>
 
-        {/* Small helper text */}
-        <p className="mt-10 text-sm text-gray-500">
-          Tip: check the URL or try searching again
+        <p className="mt-8 text-sm font-medium text-[#77716b]">
+          Check the URL or head back to the workshop and start building again.
         </p>
-
       </div>
-
-    </div>
+    </main>
   );
 }
