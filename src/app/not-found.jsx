@@ -706,7 +706,7 @@ export default function NotFound() {
         </div>
 
         {/* Build controls */}
-        <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
+        <div className="mt-7 flex flex-row items-center justify-center gap-3">
 
           <Link
             href="/"
