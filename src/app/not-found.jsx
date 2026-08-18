@@ -516,11 +516,11 @@ export default function NotFound() {
         </h1>
 
         {/* Message */}
-        <h2 className="mt-8 text-balance text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
+        <h2 className="mt-5 text-balance text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
           Uh-oh. This build didn&apos;t quite go to plan.
         </h2>
 
-        <p className="mx-auto mt-4 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
+        <p className="mx-auto mt-2 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
           Looks like we&apos;ve got a few parts missing.
           <br className="hidden sm:block" />
           <span className="text-foreground">
