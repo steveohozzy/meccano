@@ -2,111 +2,281 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#f3eee7] px-6 py-20">
-      {/* Background construction details */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-24 -top-24 size-72 rounded-full bg-[#d71920]/10 blur-3xl" />
-        <div className="absolute -bottom-32 -right-24 size-96 rounded-full bg-[#1f1f1f]/10 blur-3xl" />
+    <main className="relative flex min-h-screen items-center overflow-hidden border-b border-line bg-grid px-4 py-20 md:px-8">
+      {/* Atmospheric background */}
+      <div className="hero-spotlight hero-spotlight-1" />
+      <div className="hero-spotlight hero-spotlight-2" />
+      <div className="hero-spotlight hero-spotlight-3" />
 
-        {/* Decorative bolts */}
-        <div className="absolute left-[8%] top-[18%] size-5 rounded-full border-4 border-[#1f1f1f]/10" />
-        <div className="absolute right-[12%] top-[28%] size-7 rounded-full border-4 border-[#d71920]/15" />
-        <div className="absolute bottom-[18%] left-[15%] size-6 rounded-full border-4 border-[#d71920]/10" />
-      </div>
+      <div className="relative z-10 mx-auto w-full max-w-[1400px]">
+        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-16">
 
-      <div className="relative z-10 mx-auto max-w-2xl text-center">
-        {/* Meccano-style badge */}
-        <div className="mx-auto mb-8 inline-flex items-center gap-3 rounded-full border border-[#1f1f1f]/10 bg-white/70 px-5 py-2 shadow-sm backdrop-blur">
-          <span className="size-3 rounded-full bg-[#d71920]" />
-          <span className="text-sm font-bold uppercase tracking-[0.2em] text-[#1f1f1f]">
-            Meccano
-          </span>
-        </div>
+          {/* Left */}
+          <div className="text-center lg:col-span-7 lg:text-left">
 
-        {/* Big 404 */}
-        <h1 className="font-heading text-8xl font-black leading-none tracking-tight text-[#d71920] sm:text-9xl">
-          404
-        </h1>
+            {/* Status label */}
+            <div className="mb-6 flex justify-center lg:justify-start">
+              <span className="flex items-center gap-2 rounded-full border border-red-500 bg-red-600/25 px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.2em] text-red-100 shadow-[0_0_20px_rgba(220,38,38,.2)] backdrop-blur-md">
+                <span className="h-1.5 w-1.5 rounded-full bg-red-400" />
+                Error / 404
+              </span>
+            </div>
 
-        {/* Heading */}
-        <h2 className="mt-6 font-heading text-3xl font-bold tracking-tight text-[#1f1f1f] sm:text-4xl">
-          Looks like this build is missing a few parts.
-        </h2>
+            {/* 404 */}
+            <h1 className="text-[7rem] font-extrabold leading-[0.8] tracking-tight text-foreground sm:text-[9rem] lg:text-[11rem]">
+              4
+              <span className="bg-gradient-to-r from-red-800 to-red-500 bg-clip-text text-transparent">
+                0
+              </span>
+              4
+            </h1>
 
-        <p className="mx-auto mt-5 max-w-lg text-base leading-7 text-[#5f5a55] sm:text-lg">
-          We couldn’t find the page you’re looking for. It may have been
-          moved, taken apart, or simply never made it onto the workbench.
-        </p>
+            <h2 className="mt-8 text-balance text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+              Looks like this build is missing a few parts.
+            </h2>
 
-        {/* Meccano-inspired construction graphic */}
-        <div className="relative mx-auto my-12 h-36 w-64">
-          {/* Horizontal metal beam */}
-          <div className="absolute left-1/2 top-1/2 h-5 w-56 -translate-x-1/2 -translate-y-1/2 rotate-6 rounded-sm bg-[#1f1f1f] shadow-md">
-            <div className="absolute inset-x-4 top-1/2 flex -translate-y-1/2 justify-between">
-              {Array.from({ length: 7 }).map((_, index) => (
-                <span
-                  key={index}
-                  className="size-2.5 rounded-full bg-[#f3eee7]"
-                />
-              ))}
+            <p className="mx-auto mt-5 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg lg:mx-0">
+              We couldn’t find the page you’re looking for. It may have been
+              moved, taken apart, or simply never made it onto the workbench.
+            </p>
+
+            {/* Buttons */}
+            <div className="mt-9 flex flex-wrap justify-center gap-3 lg:justify-start">
+              <Link
+                href="/"
+                className="
+                  inline-flex
+                  items-center
+                  gap-2
+                  rounded-md
+                  border
+                  border-red-400/40
+                  bg-gradient-to-b
+                  from-red-700
+                  to-red-800
+                  px-6
+                  py-3.5
+                  font-mono
+                  text-xs
+                  font-semibold
+                  uppercase
+                  tracking-[0.15em]
+                  text-white
+                  shadow-[0_0_25px_rgba(220,38,38,.35)]
+                  transition-all
+                  hover:-translate-y-0.5
+                  hover:brightness-110
+                "
+              >
+                Back to home
+              </Link>
+
+              <Link
+                href="/discover"
+                className="
+                  inline-flex
+                  items-center
+                  gap-2
+                  rounded-md
+                  border
+                  border-white/15
+                  bg-surface
+                  px-6
+                  py-3.5
+                  font-mono
+                  text-xs
+                  uppercase
+                  tracking-[0.15em]
+                  text-muted-foreground
+                  transition-all
+                  hover:-translate-y-0.5
+                  hover:border-red-500/60
+                  hover:bg-black
+                  hover:text-white
+                "
+              >
+                Explore Meccano
+              </Link>
             </div>
           </div>
 
-          {/* Red connecting beam */}
-          <div className="absolute left-1/2 top-1/2 h-5 w-40 -translate-x-1/2 -translate-y-1/2 -rotate-45 rounded-sm bg-[#d71920] shadow-md" />
+          {/* Right */}
+          <div className="lg:col-span-5">
+            <div
+              className="
+                relative
+                mx-auto
+                h-[360px]
+                max-w-[420px]
+                overflow-hidden
+                rounded-[2.5rem]
+                border
+                border-red-500/40
+                bg-gradient-to-br
+                from-red-600/20
+                via-white/10
+                to-red-600/20
+                p-3
+                shadow-[0_0_35px_rgba(80,180,255,0.18)]
+                lg:h-[420px]
+              "
+            >
+              {/* Inner frame */}
+              <div
+                className="
+                  relative
+                  flex
+                  h-full
+                  w-full
+                  items-center
+                  justify-center
+                  overflow-hidden
+                  rounded-[2.3rem]
+                  border
+                  border-white/10
+                  bg-black/20
+                  backdrop-blur-sm
+                "
+              >
+                {/* Glow */}
+                <div className="absolute h-48 w-48 rounded-full bg-red-600/20 blur-[70px]" />
 
-          {/* Centre bolt */}
-          <div className="absolute left-1/2 top-1/2 size-9 -translate-x-1/2 -translate-y-1/2 rounded-full border-4 border-[#1f1f1f] bg-[#f3eee7] shadow-md" />
+                {/* Mechanical graphic */}
+                <div className="relative h-52 w-64">
 
-          {/* Corner bolts */}
-          <div className="absolute left-7 top-5 size-7 rounded-full border-4 border-[#1f1f1f] bg-[#f3eee7]" />
-          <div className="absolute bottom-5 right-7 size-7 rounded-full border-4 border-[#d71920] bg-[#f3eee7]" />
+                  {/* Main metal beam */}
+                  <div
+                    className="
+                      absolute
+                      left-1/2
+                      top-1/2
+                      h-7
+                      w-60
+                      -translate-x-1/2
+                      -translate-y-1/2
+                      rotate-6
+                      rounded-sm
+                      border
+                      border-white/10
+                      bg-gradient-to-b
+                      from-white/20
+                      to-white/5
+                    "
+                  >
+                    <div className="absolute inset-x-5 top-1/2 flex -translate-y-1/2 justify-between">
+                      {Array.from({ length: 7 }).map((_, index) => (
+                        <span
+                          key={index}
+                          className="h-2.5 w-2.5 rounded-full bg-black/70"
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Red beam */}
+                  <div
+                    className="
+                      absolute
+                      left-1/2
+                      top-1/2
+                      h-7
+                      w-44
+                      -translate-x-1/2
+                      -translate-y-1/2
+                      -rotate-45
+                      rounded-sm
+                      border
+                      border-red-400/30
+                      bg-gradient-to-r
+                      from-red-900
+                      via-red-700
+                      to-red-500
+                      shadow-[0_0_25px_rgba(220,38,38,.3)]
+                    "
+                  />
+
+                  {/* Centre bolt */}
+                  <div
+                    className="
+                      absolute
+                      left-1/2
+                      top-1/2
+                      h-14
+                      w-14
+                      -translate-x-1/2
+                      -translate-y-1/2
+                      rounded-full
+                      border
+                      border-white/20
+                      bg-[#111315]
+                    "
+                  >
+                    <div
+                      className="
+                        absolute
+                        left-1/2
+                        top-1/2
+                        h-5
+                        w-5
+                        -translate-x-1/2
+                        -translate-y-1/2
+                        rounded-full
+                        border
+                        border-white/20
+                        bg-white/10
+                      "
+                    />
+                  </div>
+
+                  {/* Loose bolt */}
+                  <div
+                    className="
+                      absolute
+                      right-0
+                      top-1
+                      h-9
+                      w-9
+                      rounded-full
+                      border
+                      border-red-500/50
+                      bg-red-600/10
+                      shadow-[0_0_20px_rgba(220,38,38,.25)]
+                    "
+                  />
+
+                  {/* Technical label */}
+                  <div
+                    className="
+                      absolute
+                      bottom-0
+                      left-2
+                      font-mono
+                      text-[9px]
+                      uppercase
+                      tracking-[0.2em]
+                      text-red-500
+                    "
+                  >
+                    Part not found
+                  </div>
+                </div>
+
+                {/* Gloss */}
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent" />
+
+                {/* Edge highlight */}
+                <div className="pointer-events-none absolute inset-[1px] rounded-[2.2rem] ring-1 ring-white/10" />
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* CTAs */}
-        <div className="flex flex-col justify-center gap-4 sm:flex-row">
-          <Link
-            href="/"
-            className="
-              inline-flex items-center justify-center
-              rounded-full
-              bg-[#d71920]
-              px-7 py-3.5
-              font-bold
-              text-white
-              shadow-lg shadow-[#d71920]/20
-              transition-all
-              hover:-translate-y-1
-              hover:bg-[#b9141a]
-              hover:shadow-xl
-            "
-          >
-            Back to the workshop
-          </Link>
-
-          <Link
-            href="/discover"
-            className="
-              inline-flex items-center justify-center
-              rounded-full
-              border-2 border-[#1f1f1f]
-              bg-transparent
-              px-7 py-3.5
-              font-bold
-              text-[#1f1f1f]
-              transition-all
-              hover:-translate-y-1
-              hover:bg-[#1f1f1f]
-              hover:text-white
-            "
-          >
-            Explore Meccano
-          </Link>
+        {/* Footer status */}
+        <div className="mt-14 border-t border-line pt-6 text-center">
+          <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
+            Error 404 // Page unavailable // Return to assembly
+          </p>
         </div>
-
-        <p className="mt-8 text-sm font-medium text-[#77716b]">
-          Check the URL or head back to the workshop and start building again.
-        </p>
       </div>
     </main>
   );
