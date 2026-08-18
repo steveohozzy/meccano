@@ -507,7 +507,7 @@ export default function NotFound() {
         </div>
 
         {/* 404 */}
-        <h1 className="text-[7rem] font-extrabold leading-[0.8] tracking-[-0.08em] text-foreground sm:text-[9rem]">
+        <h1 className="text-[7rem] font-extrabold leading-[0.8] tracking-[-0.08em] text-foreground sm:text-[7rem]">
           4
           <span className="bg-gradient-to-r from-red-800 to-red-500 bg-clip-text text-transparent">
             0
@@ -516,7 +516,7 @@ export default function NotFound() {
         </h1>
 
         {/* Message */}
-        <h2 className="mt-8 text-balance text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+        <h2 className="mt-8 text-balance text-2xl font-extrabold tracking-tight text-foreground sm:text-3xl">
           Uh-oh. This build didn&apos;t quite go to plan.
         </h2>
 
@@ -687,17 +687,11 @@ export default function NotFound() {
               </p>
             </div>
           )}
-
-        </div>
-
-        {/* Build controls */}
-        <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
-
-          <button
+        <button
             type="button"
             onClick={startBuild}
             disabled={isBuilding}
-            className="group inline-flex items-center gap-3 rounded-md border border-red-400/50 bg-gradient-to-b from-red-600 to-red-800 px-7 py-4 font-mono text-xs font-bold uppercase tracking-[0.15em] text-white shadow-[0_0_25px_rgba(220,38,38,.35)] transition-all hover:-translate-y-1 hover:brightness-110 hover:shadow-[0_0_40px_rgba(220,38,38,.55)] disabled:cursor-wait disabled:opacity-70"
+            className="group inline-flex items-center gap-3 rounded-md border border-red-400/50 bg-gradient-to-b from-red-600 to-red-800 px-7 py-4 font-mono text-xs font-bold uppercase tracking-[0.15em] text-white shadow-[0_0_25px_rgba(220,38,38,.35)] transition-all hover:-translate-y-1 hover:brightness-110 hover:shadow-[0_0_40px_rgba(220,38,38,.55)] disabled:cursor-wait disabled:opacity-70 mt-2 cursor-pointer"
           >
             <span className="text-base transition-transform duration-300 group-hover:rotate-180">
               ⚙
@@ -709,19 +703,74 @@ export default function NotFound() {
                 ? "Build Another"
                 : "Build It!"}
           </button>
+        </div>
+
+        {/* Build controls */}
+        <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
 
           <Link
             href="/"
-            className="inline-flex items-center gap-2 rounded-md border border-white/15 bg-surface px-7 py-4 font-mono text-xs uppercase tracking-[0.15em] text-muted-foreground transition-all hover:-translate-y-1 hover:border-red-500/60 hover:bg-black hover:text-white"
+            className="
+              inline-flex
+              items-center
+              gap-2
+              rounded-md
+              border
+              border-red-400/40
+              bg-gradient-to-b
+              from-red-700
+              to-red-800
+              px-6
+              py-3.5
+              font-mono
+              text-xs
+              font-semibold
+              uppercase
+              tracking-[0.15em]
+              text-white
+              shadow-[0_0_25px_rgba(220,38,38,.35)]
+              transition-all
+              hover:-translate-y-0.5
+              hover:brightness-110
+              hover:shadow-[0_0_35px_rgba(220,38,38,.5)]
+            "
           >
             Back to home
+          </Link>
+
+          <Link
+            href="/discover"
+            className="
+              inline-flex
+              items-center
+              gap-2
+              rounded-md
+              border
+              border-white/15
+              bg-surface
+              px-6
+              py-3.5
+              font-mono
+              text-xs
+              uppercase
+              tracking-[0.15em]
+              text-muted-foreground
+              transition-all
+              hover:-translate-y-0.5
+              hover:border-red-500/60
+              hover:bg-black
+              hover:text-white
+              hover:shadow-[0_0_25px_rgba(220,38,38,.2)]
+            "
+          >
+            Explore Meccano
           </Link>
 
         </div>
 
         {build && (
           <p className="mt-4 font-mono text-[9px] uppercase tracking-[0.15em] text-muted-foreground">
-            Not quite the page you were looking for... but at least we built{" "}
+            Not quite the page you were looking for... but at least we built a{" "}
             {build.name.toLowerCase()}.
           </p>
         )}
