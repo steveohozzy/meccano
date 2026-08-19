@@ -162,19 +162,6 @@ function Wheel({
 
 /* =========================================================
    GENERIC DRAGGABLE PIECE
-
-   IMPORTANT:
-   x/y are the CENTER of the piece.
-
-   The previous version translated the piece twice:
-   - once on the outer draggable element
-   - once again on the inner wrapper
-
-   That caused the finished models to look offset/broken.
-
-   The piece now gets translated only once, so the finished
-   models keep their intended shapes while every individual
-   part remains independently draggable.
 ========================================================= */
 
 function DraggablePiece({
@@ -187,6 +174,9 @@ function DraggablePiece({
   children,
   className = "",
   containerRef,
+  scale = 1,
+  logicalWidth,
+  logicalHeight,
 }) {
   const pieceRef = useRef(null);
   const dragRef = useRef(null);
@@ -202,11 +192,7 @@ function DraggablePiece({
     const element = pieceRef.current;
     const container = containerRef?.current;
 
-    if (!element || !container) {
-      return;
-    }
-
-    const containerRect = container.getBoundingClientRect();
+    if (!element || !container) return;
 
     dragRef.current = {
       pointerId: event.pointerId,
@@ -214,17 +200,13 @@ function DraggablePiece({
       startY: event.clientY,
       originalX: x,
       originalY: y,
-      containerLeft: containerRect.left,
-      containerTop: containerRect.top,
     };
 
     element.style.zIndex = "100";
 
     try {
       element.setPointerCapture(event.pointerId);
-    } catch {
-      // Ignore pointer capture failures.
-    }
+    } catch {}
   };
 
   const handlePointerMove = (event) => {
@@ -240,40 +222,54 @@ function DraggablePiece({
     const element = pieceRef.current;
     const container = containerRef?.current;
 
-    if (!element || !container) {
-      return;
-    }
+    if (!element || !container) return;
 
-    const containerRect = container.getBoundingClientRect();
     const pieceRect = element.getBoundingClientRect();
 
-    const deltaX = event.clientX - drag.startX;
-    const deltaY = event.clientY - drag.startY;
+    /*
+      Convert real screen movement back into
+      the logical 600px canvas movement.
+    */
+
+    const deltaX =
+      (event.clientX - drag.startX) / scale;
+
+    const deltaY =
+      (event.clientY - drag.startY) / scale;
 
     let nextX = drag.originalX + deltaX;
     let nextY = drag.originalY + deltaY;
 
-    /*
-      x/y represent the centre of the piece.
-      Keep the complete piece inside the workbench.
-    */
-    const halfWidth = pieceRect.width / 2;
-    const halfHeight = pieceRect.height / 2;
+    const halfWidth = pieceRect.width / 2 / scale;
+    const halfHeight = pieceRect.height / 2 / scale;
+
+    const width =
+      logicalWidth || container.offsetWidth;
+
+    const height =
+      logicalHeight || container.offsetHeight;
 
     const minX = halfWidth;
     const maxX = Math.max(
       halfWidth,
-      containerRect.width - halfWidth
+      width - halfWidth
     );
 
     const minY = halfHeight;
     const maxY = Math.max(
       halfHeight,
-      containerRect.height - halfHeight
+      height - halfHeight
     );
 
-    nextX = Math.max(minX, Math.min(maxX, nextX));
-    nextY = Math.max(minY, Math.min(maxY, nextY));
+    nextX = Math.max(
+      minX,
+      Math.min(maxX, nextX)
+    );
+
+    nextY = Math.max(
+      minY,
+      Math.min(maxY, nextY)
+    );
 
     onMove(id, nextX, nextY);
   };
@@ -290,9 +286,7 @@ function DraggablePiece({
     if (element) {
       try {
         element.releasePointerCapture(event.pointerId);
-      } catch {
-        // Pointer capture may already have been released.
-      }
+      } catch {}
 
       element.style.zIndex = "20";
     }
@@ -1043,15 +1037,6 @@ function renderFinishedPart(part) {
 
 /* =========================================================
    DRAGGABLE FINISHED BUILD
-
-   Every individual finished-build part remains its own
-   DraggablePiece.
-
-   This means:
-   - drag individual parts
-   - double-click individual parts to rotate
-   - models start assembled
-   - moving one part does NOT move the others
 ========================================================= */
 
 function DraggableFinishedBuild({
@@ -1061,9 +1046,43 @@ function DraggableFinishedBuild({
   const [parts, setParts] = useState([]);
   const buildCanvasRef = useRef(null);
 
+  const DESIGN_WIDTH = 600;
+  const DESIGN_HEIGHT = 290;
+
+  const [scale, setScale] = useState(1);
+
   useEffect(() => {
     setParts(getFinishedBuildParts(type));
   }, [type, buildNumber]);
+
+  useEffect(() => {
+    const updateScale = () => {
+      const canvas = buildCanvasRef.current;
+
+      if (!canvas) return;
+
+      const width = canvas.offsetWidth;
+      const height = canvas.offsetHeight;
+
+      const nextScale = Math.min(
+        width / DESIGN_WIDTH,
+        height / DESIGN_HEIGHT,
+        1
+      );
+
+      setScale(nextScale);
+    };
+
+    updateScale();
+
+    const observer = new ResizeObserver(updateScale);
+
+    if (buildCanvasRef.current) {
+      observer.observe(buildCanvasRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   const movePart = (id, x, y) => {
     setParts((currentParts) =>
@@ -1095,22 +1114,40 @@ function DraggableFinishedBuild({
   return (
     <div
       ref={buildCanvasRef}
-      className="absolute inset-0 pointer-events-none"
+      className="absolute inset-0 pointer-events-none overflow-hidden"
     >
-      {parts.map((part) => (
-        <DraggablePiece
-          key={part.id}
-          id={part.id}
-          x={part.x}
-          y={part.y}
-          rotation={part.rotation}
-          onMove={movePart}
-          onRotate={rotatePart}
-          containerRef={buildCanvasRef}
-        >
-          {renderFinishedPart(part)}
-        </DraggablePiece>
-      ))}
+      {/* 
+        This is the original 600 × 290 design canvas.
+        It is centred and scaled down automatically.
+      */}
+
+      <div
+        className="absolute left-1/2 top-1/2"
+        style={{
+          width: DESIGN_WIDTH,
+          height: DESIGN_HEIGHT,
+          transform: `translate(-50%, -50%) scale(${scale})`,
+          transformOrigin: "center center",
+        }}
+      >
+        {parts.map((part) => (
+          <DraggablePiece
+            key={part.id}
+            id={part.id}
+            x={part.x}
+            y={part.y}
+            rotation={part.rotation}
+            onMove={movePart}
+            onRotate={rotatePart}
+            containerRef={buildCanvasRef}
+            scale={scale}
+            logicalWidth={DESIGN_WIDTH}
+            logicalHeight={DESIGN_HEIGHT}
+          >
+            {renderFinishedPart(part)}
+          </DraggablePiece>
+        ))}
+      </div>
     </div>
   );
 }
